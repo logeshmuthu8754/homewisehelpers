@@ -57,21 +57,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     function validateEmailInput() {
         const emailValue = email.value.trim();
-        
+        const emailErrorMessage = "Please enter a valid email with exactly three characters after the last dot.";
+    
         if (emailValue.length === 0) {
             emailError.textContent = "Email required.";
             return false;
         } else if (!validateEmail(emailValue)) {
             emailError.textContent = "Please enter a valid email.";
             return false;
-        } else if (emailValue.includes("@gmail.com") && emailValue.indexOf("@gmail.com") !== emailValue.lastIndexOf("@gmail.com")) {
-            emailError.textContent = "Please enter only one '@gmail.com' in the email.";
-            return false;
         } else {
-            emailError.textContent = "";
-            return true;
+            // Check if there are exactly three characters after the last dot
+            const lastDotIndex = emailValue.lastIndexOf(".");
+            const domainPart = emailValue.slice(lastDotIndex + 1);
+    
+            if (domainPart.length !== 3) {
+                emailError.textContent = emailErrorMessage;
+                return false;
+            } else {
+                emailError.textContent = "";
+                return true;
+            }
         }
     }
+    
 
     function validatePassword() {
         const minLength = 8;
