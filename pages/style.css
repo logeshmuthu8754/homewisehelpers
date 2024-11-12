@@ -1,0 +1,381 @@
+body{
+
+    background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
+    width: 100%;
+  padding:0%;
+    margin: 0%;
+    margin-top: 0;
+}
+.heading_baground{
+    border-bottom: 5px solid white;
+    padding: 0.5px;
+    height: 180px;
+
+}
+/* .head{
+    color: white;
+    margin-left: 30px;
+    font-size: 60px;
+    
+}
+.sub_head{
+    color: rgb(226, 192, 23);
+    margin-left: 40px;
+    font-size: 60px;
+    height: 0;    
+}
+
+.worker{
+    background-color: black;
+    color: white;
+    display: inline;
+    padding: 10px;
+    border-radius: 50px;
+    padding-left: 40px;
+    margin-left: 100px;
+    margin-top: 200px;
+  
+} */
+
+
+.head{
+    color: white;
+    margin-left: 30px;
+    font-size: 60px;
+    margin-top: 20px; 
+    margin-bottom: 30px; 
+
+}
+
+.sub_head{
+    color: rgb(226, 192, 23);
+    margin-left: 70px;
+    font-size: 35px;
+    margin-top: -40px; 
+    margin-bottom: 30px; 
+}
+
+.worker {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    margin-top: 200px;
+    max-width: 130px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    font-size: 30px;
+    border: 3px solid white; /* White border */
+    border-radius: 20px; /* Rounded corners */
+    
+    /* Box shadow for a slight 3D effect */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.or{
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.user{
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    margin-top: 200px;
+    max-width: 130px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    border: 3px solid white; /* White border */
+    border-radius: 20px;
+    margin-top: 0px; 
+    margin-bottom: 30px; 
+    text-decoration: none;
+}
+a{
+    text-decoration: none;
+}
+/* #form{
+    background-color: white;
+   margin-left: 500px;
+    width: 500px;
+    height: 600px;
+    padding: 20px;
+    border-radius: 20px;
+}
+#email_login{
+    margin-top: 25px;
+    width: 400px;
+ height: 40px;
+ border: 2px solid black;
+ border-radius: 10px;
+ margin-left: 30px;
+    
+}
+#email_lable{
+    display: block;
+    font-size: 30px;
+    margin-left: 30px;
+    margin-top: 30px;
+}
+#password_lable{
+    display: block;
+    font-size: 30px;
+    margin-left: 30px;
+    margin-top: 30px;
+
+}
+#password{
+    margin-top: 25px;
+    width: 400px;
+ height: 40px;
+ border: 2px solid black;
+ border-radius: 10px;
+ margin-left: 30px;
+} */
+.container {
+    background-color: rgba(239, 223, 223, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    text-align: center;
+    margin-left: 550px;
+    margin-top: 60px;
+}
+#Form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0%;
+}
+#loginHeading {
+    font-size: 28px;
+    margin-bottom: 0px;
+    color: black;
+}
+input[type="email"],
+input[type="password"] {
+    height: 45px;
+    width: 90%;
+    padding: 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+#login {
+    height: 45px;
+    width: 100%;
+    background-color: rgb(47, 179, 76);
+    color: #f8f3f3;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+#login:hover {
+    background-color: rgb(13, 158, 93);
+    transform: scale(1.05);
+}
+p {
+    text-align: center;
+    font-size: 16px;
+    color: black;
+}
+a {
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+a:hover {
+    text-decoration: underline;
+    color: rgb(13, 158, 59);
+}
+#email-error{
+    color: red;
+}
+#password-error{
+    color: red;
+}
+.password-container {
+    position: relative;
+    width: 100%;
+    
+    align-items: center;
+}
+#password {
+    width: 80%;
+    padding: 0 40px 0 15px; 
+    height: 45px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: #666;
+    font-size: 18px;
+    margin-top: 15PX;
+}
+#email_lable{
+    display: block;
+    font-size: 25px;
+    margin-right: 250px;
+    
+}
+#password_lable{
+    display: block;
+    font-size: 25px;
+    margin-right: 250px;
+    margin-bottom: 10px;
+}
+#name_lable{
+    display: block;
+    font-size: 25px;
+    margin-right: 250px;
+    
+} 
+#name_create{
+    width: 80%;
+    padding: 0 40px 0 15px; 
+    height: 45px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+
+}
+#con_password_lable{
+    display: block;
+    font-size: 25px;
+    margin-right: 250px;
+    margin-bottom: 10px;  
+}
+
+/*try for summa*/
+#form_containar {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    margin-left: 550px;
+}
+
+/* Heading styles */
+#signup_heading {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Label styling */
+#name_lable,
+#email_lable_sgin,
+#password_lable_sgin,
+#password_lable_sgin_con,
+#address_lable,
+#role_lable {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+ 
+    font-size: 60px;
+}
+
+/* Input field styling */
+#name,
+#email_sgin,
+#password_sgin,
+#password_sgin_con,
+#address,
+#role {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Dropdown styling */
+#role {
+    appearance: none;
+    background-color: white;
+}
+
+/* Button styling */
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* Heading section styling */
+#sginup_a_tag{
+    margin-left: 130px;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
