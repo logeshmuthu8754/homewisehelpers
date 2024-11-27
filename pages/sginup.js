@@ -168,7 +168,7 @@ signupForm.addEventListener("submit", async (event) => {
         });
 
         alert("Signup successful!");
-        window.location.href = "./login.html";
+        window.location.href = "../index.html";
     } catch (error) {
         alert(`Error: ${error.message}`);
     }

@@ -105,7 +105,7 @@ loginForm.addEventListener("submit", async (event) => {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists() && userDoc.data().userType === userType) {
             alert("Login successful!");
-            window.location.href = "./home.html";
+            window.location.href = "./pages/home.html";
         } else {
             userTypeError.textContent = "Invalid user type or account not found.";
         }
