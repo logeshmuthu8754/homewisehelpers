@@ -284,38 +284,38 @@ a:hover {
 
 /* Label styling */
 #name_lable,
-#email_lable_sgin,
-#password_lable_sgin,
-#password_lable_sgin_con,
+#email_lable,
+#password_lable,
+#password_lable,
 #address_lable,
 #role_lable {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: -20px;
     color: #333;
  
     font-size: 60px;
 }
 
 /* Input field styling */
-#name,
+/* #name,
 #email_sgin,
 #password_sgin,
 #password_sgin_con,
-#address,
-#role {
+#address
+  {
     width: 100%;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 5px;
     font-size: 14px;
-}
+}  */
 
 /* Dropdown styling */
-#role {
+/* #role {
     appearance: none;
     background-color: white;
-}
+} */
 
 /* Button styling */
 button[type="submit"] {
@@ -336,8 +336,8 @@ button[type="submit"]:hover {
 /* Error message styling */
 .error-message {
     color: red;
-    font-size: 12px;
-    margin-top: -10px;
+    font-size: 20px;
+    margin-top: 0px;
     margin-bottom: 10px;
 }
 
@@ -346,7 +346,18 @@ button[type="submit"]:hover {
     margin-left: 130px;
     
 }
-
+form input,
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+span{
+    font-size: 20px;
+}
 
 
 

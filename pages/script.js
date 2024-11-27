@@ -1,92 +1,122 @@
-// Import necessary Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-// Firebase configuration
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyDVaNjFIWHCeYA8Tpxr_QL55TBIAyPPydU",
     authDomain: "home-wise-helpers.firebaseapp.com",
     projectId: "home-wise-helpers",
-    storageBucket: "home-wise-helpers.firebaseapp.com",
+    storageBucket: "home-wise-helpers.appspot.com",
     messagingSenderId: "542965182309",
     appId: "1:542965182309:web:5aa5d4fc51532d3b843b8c",
-    measurementId: "G-TMQKDMXBHN"
+    measurementId: "G-TMQKDMXBHN",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
-// Email validation function
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-}
+// DOM Elements
+const loginForm = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const userTypeInput = document.getElementById("userType");
+const togglePassword = document.getElementById("togglePassword");
 
-// Login form validation and authentication
-document.addEventListener("DOMContentLoaded", function () {
-    // Login form elements
-    const loginForm = document.getElementById("Form"); // Assuming your login form has id="Form"
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const emailError = document.getElementById("email-error");
-    const passwordError = document.getElementById("password-error");
-    const minLength = 8;
+// Error Elements
+const emailError = document.getElementById("email-error");
+const passwordError = document.getElementById("password-error");
+const userTypeError = document.getElementById("userType-error");
 
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form from submitting by default
+// Toggle Password Visibility
+togglePassword.addEventListener("click", () => {
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+});
 
-            // Clear previous error messages
-            emailError.textContent = "";
-            passwordError.textContent = "";
-            let valid = true;
+// Validate Email Format
+const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple regex for email format
+    return emailRegex.test(email);
+};
 
-            // Validate email
-            if (email.value.length === 0) {
-                emailError.textContent = "Email required";
-                valid = false;
-            } else if (!validateEmail(email.value)) {
-                emailError.textContent = "Please enter a valid email";
-                valid = false;
-            }
+// Form Validation
+const validateLoginForm = () => {
+    let isValid = true;
 
-            // Validate password
-            if (password.value.length === 0) {
-                passwordError.textContent = "Password required";
-                valid = false;
-            } else if (password.value.length < minLength) {
-                passwordError.textContent = `Password must be at least ${minLength} characters long.`;
-                valid = false;
-            }
+    // Clear previous error messages
+    emailError.textContent = "";
+    passwordError.textContent = "";
+    userTypeError.textContent = "";
 
-            // If validation passes, proceed with Firebase authentication
-            if (valid) {
-                signInWithEmailAndPassword(auth, email.value, password.value)
-                    .then((userCredential) => {
-                        // Successful login
-                        const user = userCredential.user;
-                        alert("Login successful!");
-                        window.location.href = "../pages/home.html"; // Redirect to dashboard or home page
-                    })
-                    .catch((error) => {
-                        // Display error message from Firebase
-                        const errorMessage = error.message;
-                        alert(`Error: ${errorMessage}`);
-                    });
-            }
-        });
+    // Email Validation
+    const emailValue = emailInput.value.trim();
+    if (!emailValue) {
+        emailError.textContent = "Email is required.";
+        isValid = false;
+    } else if (!isValidEmail(emailValue)) {
+        emailError.textContent = "Invalid email format.";
+        isValid = false;
     }
 
-    // Toggle password visibility
-    const togglePassword = document.querySelector("#togglePassword");
-    if (togglePassword && password) {
-        togglePassword.addEventListener("click", function () {
-            const type = password.getAttribute("type") === "password" ? "text" : "password";
-            password.setAttribute("type", type);
-            this.innerHTML = type === "password" ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-        });
+    // Password Validation
+    const passwordValue = passwordInput.value.trim();
+    if (!passwordValue) {
+        passwordError.textContent = "Password is required.";
+        isValid = false;
+    }
+
+    // User Type Validation
+    if (!userTypeInput.value) {
+        userTypeError.textContent = "Please select a user type.";
+        isValid = false;
+    }
+
+    return isValid;
+};
+
+// Clear Error Messages Dynamically
+emailInput.addEventListener("input", () => {
+    emailError.textContent = "";
+});
+passwordInput.addEventListener("input", () => {
+    passwordError.textContent = "";
+});
+userTypeInput.addEventListener("change", () => {
+    userTypeError.textContent = "";
+});
+
+// Login Form Submission
+loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!validateLoginForm()) return;
+
+    try {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        const userType = userTypeInput.value;
+
+        // Authenticate User with Firebase
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Check User Type in Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists() && userDoc.data().userType === userType) {
+            alert("Login successful!");
+            window.location.href = "./home.html";
+        } else {
+            userTypeError.textContent = "Invalid user type or account not found.";
+        }
+    } catch (error) {
+        // Handle specific Firebase errors
+        if (error.code === "auth/user-not-found") {
+            emailError.textContent = "No account found with this email.";
+        } else if (error.code === "auth/wrong-password") {
+            passwordError.textContent = "Incorrect password.";
+        } else {
+            passwordError.textContent = "Email or password is invalide";
+        }
     }
 });

@@ -3,56 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Wise Helpers</title>
-    <link rel="stylesheet" href="../pages/style.css">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+
     <div class="heading_baground">
         <div class="home_div">
         <h1 class="head">Home</h1></div>
-       <div class="sub_head"> <h2>Wise Helpers</h2>
-    </div>
-    <div id="form_containar">
-        <form id="myForm" novalidate>
-            <label for="name">Name:</label>
-            <input type="text" id="name">
-            <span id="name-error" class="error-message"></span><br>
- 
-            <label for="email_sgin">Email:</label>
-            <input type="email" id="email_sgin">
-            <span id="email-error-sgin" class="error-message"></span><br>
- 
-            <label for="password_sgin">Password:</label>
-            <input type="password" id="password_sgin">
-            <span id="password-error-sgin" class="error-message"></span><br>
- 
-            <label for="password_sgin_con">Confirm Password:</label>
-            <input type="password" id="password_sgin_con">
-            <span id="password-error-con" class="error-message"></span><br>
- 
-            <label for="address">Address:</label>
-            <input type="text" id="address">
-            <span id="address-error" class="error-message"></span><br>
- 
-            <label for="role">Role:</label>
-            <select id="role">
-                <option value="">Select a Role</option>
-                <option value="Plumber">Plumber</option>
-                <option value="Electrician">Electrician</option>
-                <option value="AC Mechanic">AC Mechanic</option>
-                <option value="TV Mechanic">TV Mechanic</option>
-                <option value="Carpenter">Carpenter</option>
-                <option value="Bike Mechanic">Bike Mechanic</option>
-                <option value="Mason">Mason</option>
-                <option value="Acting Driver">Acting Driver</option>
-            </select>
-            <span id="role-error" class="error-message"></span><br>
- 
-            <button type="submit">Submit</button>
-            <a href="../pages/login.html" id="sginup_a_tag">I have account</a>
+       <div class="sub_head"> <h2>Wise Helpers</h2></div>
+       
+    <div class="container">
 
+        <form id="signupForm" novalidate>
+            <h1>Sign Up</h1>
+
+            <!-- User Type -->
+            <label for="userType">User Type:</label>
+            <select id="userType">
+                <option value="">Select</option>
+                <option value="worker">Worker</option>
+                <option value="user">User</option>
+            </select>
+            <span id="userType-error" class="error-message"></span><br>
+
+            <!-- Full Name -->
+            <label for="name_lable">Full Name:</label>
+            <input type="text" id="name" placeholder="Enter your full name">
+            <span id="name-error" class="error-message"></span><br>
+
+            <!-- Email -->
+            <label for="email_lable">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email">
+            <span id="email-error" class="error-message"></span><br>
+
+            <!-- Password -->
+            <label for="password_lable">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password">
+            <span id="password-error" class="error-message"></span><br>
+
+            <!-- Confirm Password -->
+            <label for="confirmPassword_lable">Confirm Password:</label>
+            <input type="password" id="confirmPassword" placeholder="Re-enter your password">
+            <span id="confirmPassword-error" class="error-message"></span><br>
+
+            <!-- Worker Role -->
+            <div id="workerRoleContainer" style="display: none;">
+                <label for="role_lable">Role:</label>
+                <select id="role">
+                    <option value="">Select Role</option>
+                    <option value="Plumber">Plumber</option>
+                    <option value="Electrician">Electrician</option>
+                    <option value="Carpenter">Carpenter</option>
+                </select>
+                <span id="role-error" class="error-message"></span><br>
+            </div>
+
+            <button type="submit">Sign Up</button>
+            <a href="./login.html">Already have an account? Login</a>
         </form>
-     </div> 
-     <script type="module" src="../pages/sginup.js"></script>
+    </div>
+    <script src="./sginup.js" type="module"></script>
 </body>
 </html>
+

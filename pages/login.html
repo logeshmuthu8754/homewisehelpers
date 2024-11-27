@@ -4,34 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="../pages/style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 </head>
 <body>
+
     <div class="heading_baground">
         <div class="home_div">
         <h1 class="head">Home</h1></div>
        <div class="sub_head"> <h2>Wise Helpers</h2></div>
+
     <div class="container">
-        <form action="../pages/home.html" id="Form" novalidate>
-            <h1 id="loginHeading">LOGIN</h1>
-            <label for="email" id="email_lable">Email:</label>
-            <input type="email" id="email" name="email">
-            <span id="email-error" ></span>
+        <form id="loginForm" novalidate>
+            <h1>Login</h1>
+            <label for="userType">User Type:</label>
+            <select id="userType">
+                <option value="">Select</option>
+                <option value="worker">Worker</option>
+                <option value="user">User</option>
+            </select>
+            <span id="userType-error" class="error-message"></span><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email">
+            <span id="email-error" class="error-message"></span><br>
+
             <div class="password-container">
-                <label for="password" id="password_lable">Password:</label>
-                <input type="password" id="password" name="password">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter your password">
                 <span id="togglePassword" class="eye-icon">
                     <i class="fas fa-eye"></i>
                 </span>
             </div>
-            <span id="password-error"></span>
-            <button id="login">Login</button>
-            <a href="../pages/sign_up.html">Don't have account</a>
+            <span id="password-error" class="error-message"></span><br>
+
+            <button type="submit">Login</button>
+            <a href="./sign_up.html">Don't have an account? Sign Up</a>
         </form>
     </div>
-    <script type="module" src="../pages/script.js"></script>
+    <script src="./script.js" type="module"></script>
 </body>
 </html>
