@@ -7,7 +7,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyDVaNjFIWHCeYA8Tpxr_QL55TBIAyPPydU",
     authDomain: "home-wise-helpers.firebaseapp.com",
     projectId: "home-wise-helpers",
-    storageBucket: "home-wise-helpers.firebasestorage.app",
+    storageBucket: "home-wise-helpers.appspot.com",
     messagingSenderId: "542965182309",
     appId: "1:542965182309:web:5aa5d4fc51532d3b843b8c",
     measurementId: "G-TMQKDMXBHN",
@@ -24,6 +24,7 @@ const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
+const addressInput = document.getElementById("address");
 const userType = document.getElementById("userType");
 const workerRoleContainer = document.getElementById("workerRoleContainer");
 const role = document.getElementById("role");
@@ -33,6 +34,7 @@ const nameError = document.getElementById("name-error");
 const emailError = document.getElementById("email-error");
 const passwordError = document.getElementById("password-error");
 const confirmPasswordError = document.getElementById("confirmPassword-error");
+const addressError = document.getElementById("address-error");
 const userTypeError = document.getElementById("userType-error");
 const roleError = document.getElementById("role-error");
 
@@ -72,7 +74,7 @@ const validateEmail = () => {
 
 const validatePassword = () => {
     const passwordValue = passwordInput.value.trim();
-    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; // Special character check
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
     if (!passwordValue) {
         passwordError.textContent = "Password is required.";
         return false;
@@ -99,6 +101,15 @@ const validateConfirmPassword = () => {
     return true;
 };
 
+const validateAddress = () => {
+    if (!addressInput.value.trim()) {
+        addressError.textContent = "Address is required.";
+        return false;
+    }
+    addressError.textContent = "";
+    return true;
+};
+
 const validateUserType = () => {
     if (!userType.value) {
         userTypeError.textContent = "Please select a user type.";
@@ -122,6 +133,7 @@ nameInput.addEventListener("input", validateName);
 emailInput.addEventListener("input", validateEmail);
 passwordInput.addEventListener("input", validatePassword);
 confirmPasswordInput.addEventListener("input", validateConfirmPassword);
+addressInput.addEventListener("input", validateAddress);
 userType.addEventListener("change", validateUserType);
 role.addEventListener("input", validateRole);
 
@@ -131,6 +143,7 @@ const validateSignupForm = () => {
     const isEmailValid = validateEmail();
     const isPasswordValid = validatePassword();
     const isConfirmPasswordValid = validateConfirmPassword();
+    const isAddressValid = validateAddress();
     const isUserTypeValid = validateUserType();
     const isRoleValid = validateRole();
 
@@ -139,6 +152,7 @@ const validateSignupForm = () => {
         isEmailValid &&
         isPasswordValid &&
         isConfirmPasswordValid &&
+        isAddressValid &&
         isUserTypeValid &&
         isRoleValid
     );
@@ -150,7 +164,7 @@ signupForm.addEventListener("submit", async (event) => {
 
     if (!validateSignupForm()) {
         console.log("Form validation failed.");
-        return; // Stop the process if validation fails
+        return;
     }
 
     try {
@@ -165,6 +179,7 @@ signupForm.addEventListener("submit", async (event) => {
             email: email,
             userType: userType.value,
             role: userType.value === "worker" ? role.value : null,
+            address: addressInput.value.trim(), // Add address to Firestore
         });
 
         alert("Signup successful!");
