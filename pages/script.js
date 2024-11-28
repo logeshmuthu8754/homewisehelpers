@@ -13,6 +13,7 @@ const firebaseConfig = {
     measurementId: "G-TMQKDMXBHN",
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -103,11 +104,22 @@ loginForm.addEventListener("submit", async (event) => {
 
         // Check User Type in Firestore
         const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists() && userDoc.data().userType === userType) {
-            alert("Login successful!");
-            window.location.href = "./pages/home.html";
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (userData.userType === userType) {
+                // Redirect based on userType
+                if (userType === "worker") {
+                    alert("Worker Login Successful!");
+                    window.location.href = "./pages/home.html"; // Redirect to worker home page
+                } else if (userType === "user") {
+                    alert("User Login Successful!");
+                    window.location.href = "./pages/userhome.html"; // Redirect to user home page
+                }
+            } else {
+                userTypeError.textContent = "Invalid user type for this account.";
+            }
         } else {
-            userTypeError.textContent = "Invalid user type or account not found.";
+            emailError.textContent = "Account not found.";
         }
     } catch (error) {
         // Handle specific Firebase errors
@@ -116,7 +128,7 @@ loginForm.addEventListener("submit", async (event) => {
         } else if (error.code === "auth/wrong-password") {
             passwordError.textContent = "Incorrect password.";
         } else {
-            passwordError.textContent = "Email or password is invalide";
+            passwordError.textContent = "An error occurred. Please try again.";
         }
     }
 });
