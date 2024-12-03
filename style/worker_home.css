@@ -5,12 +5,12 @@ body{
   padding:0%;
     margin: 0%;
     margin-top: 0;
-    height: 180vh;
+    height: 100vh;
 }
 .heading_baground{
     border-bottom: 5px solid white;
     padding: 0.5px;
-    height: 180px;
+    height: 240px;
     position: fixed;
     top: 0%;
     right: 0%;
@@ -30,14 +30,15 @@ body{
     color: rgb(226, 192, 23);
     margin-left: 70px;
     font-size: 35px;
-    margin-top: -40px; 
+    
     margin-bottom: 30px; 
 }
 .wrapper{
     margin: 70px;
     display: flex;
     justify-content: space-around;
-    margin-top: 200px;
+    margin-top: 300px;
+    
 }
 #request_page_container{
    
@@ -70,4 +71,17 @@ body{
 }
 #complited_slots{
 margin-left: 500px;
+}
+
+#profile_img{
+    width: 100px;
+    height: 100px;
+    position: relative;
+    bottom: 150px;
+    right: 50px;
+}
+#profilr_img_container{
+display: flex;
+justify-content: end;
+
 }
