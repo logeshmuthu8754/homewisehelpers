@@ -1,0 +1,74 @@
+body{
+
+    background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
+    width: 100%;
+  padding:0%;
+    margin: 0%;
+    margin-top: 0;
+    height: 100vh;
+}
+.heading_baground{
+    border-bottom: 5px solid white;
+    padding: 0.5px;
+    height: 180px;
+    position: fixed;
+    top: 0%;
+    right: 0%;
+    left: 0%;
+    background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
+}
+
+.head{
+    color: white;
+    margin-left: 30px;
+    font-size: 60px;
+    margin-top: 20px; 
+    margin-bottom: 30px; 
+
+}
+
+.sub_head{
+    color: rgb(226, 192, 23);
+    margin-left: 70px;
+    font-size: 35px;
+    margin-top: -40px; 
+    margin-bottom: 30px; 
+}
+#searchBar{
+    width: 70%;
+   margin-left: 230px;
+   background-color: bisque;
+   border-radius: 50px;
+   height:35px;
+   font-size: 20px;
+}
+#searchIcon{
+    position: relative;
+    right: 50px;
+    font-size: 25px;
+    top: 4px;
+}
+#plumber_logo{
+    width: 250px;
+    height: 250px;
+    border-radius: 100%;
+    margin-top: 80px;
+    margin-left: 50px;
+}
+#plumber_atag{
+    text-decoration: none;
+    font-size: 30px;
+    color: aliceblue;
+    margin-left: 115px;
+    margin-top: 30px;
+    
+}
+#image_container{
+    display: flex;
+    justify-content: space-around;
+    margin-right: 50px;
+    
+}
+.wrapper{
+    margin: 300px 0;
+}

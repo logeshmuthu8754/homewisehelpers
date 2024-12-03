@@ -1,0 +1,73 @@
+body{
+
+    background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
+    width: 100%;
+  padding:0%;
+    margin: 0%;
+    margin-top: 0;
+    height: 180vh;
+}
+.heading_baground{
+    border-bottom: 5px solid white;
+    padding: 0.5px;
+    height: 180px;
+    position: fixed;
+    top: 0%;
+    right: 0%;
+    left: 0%;
+    background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
+}
+.head{
+    color: white;
+    margin-left: 30px;
+    font-size: 60px;
+    margin-top: 20px; 
+    margin-bottom: 30px; 
+
+}
+
+.sub_head{
+    color: rgb(226, 192, 23);
+    margin-left: 70px;
+    font-size: 35px;
+    margin-top: -40px; 
+    margin-bottom: 30px; 
+}
+.wrapper{
+    margin: 70px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 200px;
+}
+#request_page_container{
+   
+}
+.wrapper a {
+    text-decoration: none;
+    font-size: 40px;
+    
+}
+#complited_slots a{
+    text-decoration: none;
+    font-size: 40px;
+    
+}
+#complited_slots{
+    width: 40%;
+    margin: 50px auto;
+   
+}
+.wrapper a,#complited_slots a{
+    display: flex;
+    justify-content: center;;
+    align-items: center;
+   
+    width: 500px;
+    height: 300px;
+    background-color: rgb(188, 213, 235);
+    border-radius: 10px;
+    text-decoration: none;
+}
+#complited_slots{
+margin-left: 500px;
+}

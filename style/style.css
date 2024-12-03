@@ -10,6 +10,7 @@ body{
     border-bottom: 5px solid white;
     padding: 0.5px;
     height: 180px;
+    
 
 }
 /* .head{
@@ -336,7 +337,7 @@ button[type="submit"]:hover {
 /* Error message styling */
 .error-message {
     color: red;
-    font-size: 20px;
+    font-size: 15px;
     margin-top: 0px;
     margin-bottom: 10px;
 }

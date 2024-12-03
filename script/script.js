@@ -110,10 +110,10 @@ loginForm.addEventListener("submit", async (event) => {
                 // Redirect based on userType
                 if (userType === "worker") {
                     alert("Worker Login Successful!");
-                    window.location.href = "./pages/home.html"; // Redirect to worker home page
+                    window.location.href = "/pages/worker_home.html"; // Redirect to worker home page
                 } else if (userType === "user") {
                     alert("User Login Successful!");
-                    window.location.href = "./pages/userhome.html"; // Redirect to user home page
+                    window.location.href = "/pages/home.html"; // Redirect to user home page
                 }
             } else {
                 userTypeError.textContent = "Invalid user type for this account.";
