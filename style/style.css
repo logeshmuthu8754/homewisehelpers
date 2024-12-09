@@ -298,11 +298,15 @@ a:hover {
 }
 
 /* Input field styling */
-/* #name,
+#name,
 #email_sgin,
 #password_sgin,
 #password_sgin_con,
-#address
+#address,
+#email,
+#password,
+#confirmpassword,
+#role
   {
     width: 100%;
     padding: 5px;
@@ -310,7 +314,7 @@ a:hover {
     border-radius: 5px;
     margin-bottom: 5px;
     font-size: 14px;
-}  */
+} 
 
 /* Dropdown styling */
 /* #role {
