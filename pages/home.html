@@ -10,67 +10,82 @@
 <body>
     <div class="heading_baground">
         <div class="home_div">
-        <h1 class="head">Home</h1></div>
-       <div class="sub_head"> <h2>Wise Helpers</h2>
+            <h1 class="head">Home</h1>
+        </div>
+        <div class="sub_head">
+            <h2>Wise Helpers</h2>
+        </div>
     </div>
-    </div>
+
     <div class="wrapper">
         <div id="searchContainer">
-            <input type="search" placeholder="Search Role..." id="searchBar">
+            <input type="search" placeholder="Search Role..." id="searchBar" oninput="filterRoles()">
             <i class="fa fa-search" id="searchIcon"></i>
         </div>
     
-      <div id="image_container">
-    
-        <div id="plumbercontainer">
-            <a href="./plumber.html"><img id="plumber_logo"  src="../assets/images/plumber_img.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./plumber.html">Plumber ></a>
+        <div id="rolesWrapper">
+           <div id="roleContainer">
+            <div id="roleContainer1">
+                <!-- Roles -->
+                <div class="role" data-name="Plumber">
+                    <a href="./plumber.html"><img class="role-logo" src="../assets/images/plumber_img.jpg" alt="Plumber"></a>
+                    <a class="role-link" href="./plumber.html">Plumber ></a>
+                </div>
+                <div class="role" data-name="Carpenter">
+                    <a href="./carpenter.html"><img class="role-logo" src="../assets/images/carpentar_img.jpg" alt="Carpenter"></a>
+                    <a class="role-link" href="./carpenter.html">Carpenter ></a>
+                </div>
+                <div class="role" data-name="Electrician">
+                    <a href="./electrician.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="Electrician"></a>
+                    <a class="role-link" href="./electrician.html">Electrician ></a>
+                </div>
+                <div class="role" data-name="Mason">
+                    <a href="./mason.html"><img class="role-logo" src="../assets/images/mason_img.jpg" alt="Mason"></a>
+                    <a class="role-link" href="./mason.html">Mason ></a>
+                </div>
+            </div>
+
+            <div id="roleContainer1">
+                <div class="role" data-name="AC Mechanic">
+                    <a href="./ac_mechanic.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="AC Mechanic"></a>
+                    <a class="role-link" href="./ac_mechanic.html">AC Mechanic ></a>
+                </div>
+                <div class="role" data-name="Acting Driver">
+                    <a href="./acting_driver.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="Acting Driver"></a>
+                    <a class="role-link" href="./acting_driver.html">Acting Driver ></a>
+                </div>
+                <div class="role" data-name="Bike Mechanic">
+                    <a href="./bike_mechanic.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="Bike Mechanic"></a>
+                    <a class="role-link" href="./bike_mechanic.html">Bike Mechanic ></a>
+                </div>
+                <div class="role" data-name="TV Mechanic">
+                    <a href="./tv_mechanic.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="TV Mechanic"></a>
+                    <a class="role-link" href="./tv_mechanic.html">TV Mechanic ></a>
+                </div>
+            </div>
+
+            <div id="roleContainer1">
+                <div class="role" data-name="House Cleaner">
+                    <a href="./house_cleaner.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="House Cleaner"></a>
+                    <a class="role-link" href="./house_cleaner.html">House Cleaner ></a>
+                </div>
+                <div class="role" data-name="Water Tank Cleaner">
+                    <a href="./water_tank_cleaner.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="Water Tank Cleaner"></a>
+                    <a class="role-link" href="./water_tank_cleaner.html">Water Tank Cleaner ></a>
+                </div>
+                <div class="role" data-name="Car Mechanic">
+                    <a href="./car_mechanic.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="Car Mechanic"></a>
+                    <a class="role-link" href="./car_mechanic.html">Car Mechanic ></a>
+                </div>
+                <div class="role" data-name="Welder">
+                    <a href="./welder.html"><img class="role-logo" src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt="Welder"></a>
+                    <a class="role-link" href="./welder.html">Welder ></a>
+                </div>
+            </div>
+           </div>
         </div>
-    
-        <div id="plumbercontainer">
-            <a href="./carpentar.html"><img id="plumber_logo"  src="../assets/images/carpentar_img.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./carpentar.html">carpentar ></a>
-        </div>
-    
-        <div id="plumbercontainer">
-            <a href="./elatracian.html"><img id="plumber_logo"  src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./elatracian.html">Elatracian ></a>
-        </div>
-    
-        <div id="plumbercontainer">
-            <a href="./mason.html"><img id="plumber_logo"  src="../assets/images/mason_img.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./mason.html">Mason ></a>
-        </div>
-    
-        
-    
-      </div>
-    
-      <div id="image_container">
-    
-        <div id="plumbercontainer">
-            <a href="./ac_mechanic.html"><img id="plumber_logo"  src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./ac_mechanic.html">AC Mechanic ></a>
-        </div>
-    
-        <div id="plumbercontainer">
-            <a href="./acting_driver.html"><img id="plumber_logo"  src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./acting_driver.html">Acting Driver ></a>
-        </div>
-    
-        <div id="plumbercontainer">
-            <a href="./bike_mechanic.html"><img id="plumber_logo"  src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./bike_mechanic.html">Bike Mechanic ></a>
-        </div>
-    
-        <div id="plumbercontainer">
-            <a href="./tv_machanic.html"><img id="plumber_logo"  src="../assets/images/sample_img_all-photoaidcom-cropped.jpg" alt=""> </a><br>
-             <a  id="plumber_atag" href="./tv_machanic.html">TV Mechanic ></a>
-        </div>
-    
-        
-    
-      </div>
     </div>
+
+    <script src="../script/consumer_home.js"></script>
 </body>
 </html>
