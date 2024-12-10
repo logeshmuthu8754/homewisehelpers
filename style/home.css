@@ -63,16 +63,15 @@ body {
 #roleContainer{
     display: flex;
     flex-wrap: wrap;
-    gap: 150px;
-    justify-content: space-around;
+    gap: 8rem;
+    justify-content:center;
 }
 
-#roleContainer1 {
+#roleContainer>div{
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
-    gap: 100px;
-    margin-top: 50px;
+    align-items: center;
 }
 
 .role {

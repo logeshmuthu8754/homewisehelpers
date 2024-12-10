@@ -45,13 +45,20 @@ userType.addEventListener("change", () => {
 
 // Field Validation Functions
 const validateName = () => {
-    if (!nameInput.value.trim()) {
+    const nameValue = nameInput.value.trim();
+    const nameRegex = /^[A-Za-z]+[A-Za-z\s]*$/; // Ensures at least one letter and allows spaces
+
+    if (!nameValue) {
         nameError.textContent = "Full name is required.";
         return false;
-    } else if (nameInput.value.trim().length < 2) {
+    } else if (nameValue.length < 2) {
         nameError.textContent = "Name must be at least 2 characters.";
         return false;
+    } else if (!nameRegex.test(nameValue)) {
+        nameError.textContent = "Name must include alphabetic characters and cannot be only numbers.";
+        return false;
     }
+
     nameError.textContent = "";
     return true;
 };

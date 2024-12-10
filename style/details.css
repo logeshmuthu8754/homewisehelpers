@@ -1,0 +1,44 @@
+.workerCard{
+display: flex;
+flex-direction: column;
+background-color: rgb(185, 219, 249);
+border-radius: 10px;
+height: fit-content;
+width: 80%;
+margin: 40px;
+border-bottom: 10px solid rgb(255, 122, 122);
+
+border-top: 20px solid rgb(255, 122, 122);
+
+
+}
+#workerDetails{
+  padding-bottom: 100px;
+  padding-left: 100px;
+    flex-wrap: wrap;
+    
+}
+#welderName,
+#welderAddress,
+#welderEmail{
+    font-size: 30px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+#workernamecontainer{
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#pageTitle{
+    color: azure; 
+    margin-left: 50px;
+     text-align: center;
+      font-size: 40px;
+     background-color: black;
+     display: inline; 
+     margin-left: 650px;
+      border-radius: 15px; 
+      padding: 8px;
+      width: 300px;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
