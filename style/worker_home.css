@@ -1,37 +1,35 @@
-body{
 
+body {
     background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
     width: 100%;
-  padding:0%;
-    margin: 0%;
-    margin-top: 0;
-    height: 100vh;
+    padding: 0;
+    margin: 0;
+    height: 150vh;
 }
-.heading_baground{
+
+.heading_baground {
     border-bottom: 5px solid white;
     padding: 0.5px;
-    height: 240px;
+    height: 180px;
     position: fixed;
-    top: 0%;
-    right: 0%;
-    left: 0%;
+    top: 0;
+    right: 0;
+    left: 0;
     background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
 }
-.head{
+
+.head {
     color: white;
     margin-left: 30px;
     font-size: 60px;
     margin-top: 20px; 
-    margin-bottom: 30px; 
-
 }
 
-.sub_head{
+.sub_head {
     color: rgb(226, 192, 23);
     margin-left: 70px;
     font-size: 35px;
-    
-    margin-bottom: 30px; 
+    margin-top: -40px; 
 }
 .wrapper{
     margin: 70px;
@@ -72,14 +70,31 @@ margin-left: 500px;
 }
 
 #profile_img{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     position: relative;
-    bottom: 150px;
+    bottom: 190px;
     right: 50px;
 }
 #profilr_img_container{
 display: flex;
 justify-content: end;
 
+}
+#plumber_logo,
+#activity_nav,
+#home_nav{
+    color: rgb(5, 5, 6);
+    font-size: 30px;
+    background-color:rgb(171, 241, 241);
+    margin-left: 30px;
+    padding: 5px;
+    border-radius: 20px;
+    text-decoration: none;
+}
+#navigation_container{
+    gap: 50px;
+    position: relative;
+    left: 900px;
+    bottom: 150px;
 }

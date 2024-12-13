@@ -1,4 +1,4 @@
-/* CSS Styles */
+
 body {
     background: linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
     width: 100%;
@@ -31,71 +31,57 @@ body {
     font-size: 35px;
     margin-top: -40px; 
 }
-
-#searchBar {
-    width: 70%;
-    margin-left: 230px;
-    background-color: bisque;
-    border-radius: 50px;
-    height: 35px;
-    font-size: 20px;
-    margin-bottom: 100px;
-}
-
-#searchIcon {
-    position: relative;
-    right: 50px;
-    font-size: 25px;
-    top: 4px;
-}
-
-.wrapper {
-    margin: 300px 0;
-}
-
-#rolesWrapper {
-    margin-top: 20px;
+.wrapper{
+    margin: 70px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: space-around;
-    flex-wrap: wrap;
-}
-#roleContainer{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8rem;
-    justify-content:center;
+    margin-top: 300px;
+    
 }
 
-#roleContainer>div{
+.wrapper a {
+    text-decoration: none;
+    font-size: 40px;
+    
+}
+#complited_slots a{
+    text-decoration: none;
+    font-size: 40px;
+    
+}
+#complited_slots{
+    width: 40%;
+    margin: 50px auto;
+   
+}
+.wrapper a,#complited_slots a{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: center;;
     align-items: center;
-}
-
-.role {
-    text-align: center;
-    width: 200px;
-}
-
-.role-logo {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
-.role-link {
-    font-size: 22px;
-    color: white;
+   
+    width: 500px;
+    height: 300px;
+    background-color: rgb(188, 213, 235);
+    border-radius: 10px;
     text-decoration: none;
 }
-#roleContainer{
-    display: flex;
+#complited_slots{
+margin-left: 500px;
 }
 
+#profile_img{
+    width: 80px;
+    height: 80px;
+    position: relative;
+    bottom: 190px;
+    right: 50px;
+}
+#profilr_img_container{
+display: flex;
+justify-content: end;
+
+}
+#plumber_logo,
 #activity_nav,
 #home_nav{
     color: rgb(5, 5, 6);
@@ -109,6 +95,6 @@ body {
 #navigation_container{
     gap: 50px;
     position: relative;
-    left: 1140px;
-    bottom: 60px;
+    left: 820px;
+    bottom: 80px;
 }

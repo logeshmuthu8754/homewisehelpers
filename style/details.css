@@ -1,22 +1,24 @@
 .workerCard{
 display: flex;
-flex-direction: column;
-background-color: rgb(185, 219, 249);
+flex-direction: row;
+background-color:azure;
 border-radius: 10px;
-height: fit-content;
+height:fit-content;
 width: 80%;
 margin: 40px;
-border-bottom: 10px solid rgb(255, 122, 122);
+border-bottom: 10px solid rgb(0, 0, 0);
+margin-left: 100px;
+border-top: 20px solid rgb(0, 0, 0);
 
-border-top: 20px solid rgb(255, 122, 122);
 
 
 }
+
 #workerDetails{
   padding-bottom: 100px;
   padding-left: 100px;
     flex-wrap: wrap;
-    
+    display: inline;
 }
 #welderName,
 #welderAddress,
@@ -27,18 +29,34 @@ border-top: 20px solid rgb(255, 122, 122);
 #workernamecontainer{
     font-size: 30px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left: 150px;
 }
 #pageTitle{
     color: azure; 
-    margin-left: 50px;
+   
      text-align: center;
       font-size: 40px;
      background-color: black;
      display: inline; 
-     margin-left: 650px;
+     margin-left: 450px;
       border-radius: 15px; 
       padding: 8px;
       width: 300px;
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
+}
+#profilimg_worker{
+    width: 200px;
+    height: 200px;
+   margin-top: 30px;
+   margin-left: 50px;
+align-self: flex-start;
+}
+#details_back{
+    color: rgb(5, 5, 6);
+    font-size: 30px;
+    background-color:azure;
+    margin-left: 30px;
+    padding: 5px;
+    border-radius: 10px;
 }
