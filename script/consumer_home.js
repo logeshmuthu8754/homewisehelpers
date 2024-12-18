@@ -1,7 +1,5 @@
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-// Role data object
-
-import { auth,db } from "./config.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { auth } from "./config.js"; // Ensure auth is imported correctly from your Firebase config
 
 const consumerData = {
     Plumber: "../assets/images/plumber_img.jpg",
@@ -74,9 +72,36 @@ document.addEventListener("DOMContentLoaded", () => {
 // Add event listener to the search bar for filtering roles
 searchBar.addEventListener("input", filterRoles);
 
-
-
-
-
 // Check if user is logged in
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        console.warn("Unauthorized access. Redirecting to login page.");
+        window.location.href = "../index.html";
+    }
+});
+
+// Logout button logic with confirmation
+document.getElementById("logout_btn").addEventListener("click", () => {
+    const confirmLogout = confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+        signOut(auth)
+            .then(() => {
+                console.log("User signed out successfully.");
+                localStorage.clear();
+                history.pushState(null, null, document.URL); // Prevent back navigation
+                window.location.href = "../index.html"; // Redirect to login page
+            })
+            .catch((error) => {
+                console.error("Error signing out:", error.message);
+                alert("Failed to log out. Please try again.");
+            });
+    } else {
+        console.log("Logout canceled by user.");
+    }
+});
+
+// Prevent back navigation after logout
+window.addEventListener("popstate", () => {
+    history.pushState(null, null, document.URL);
+});
 

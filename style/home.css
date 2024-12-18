@@ -97,18 +97,24 @@ body {
 }
 
 #activity_nav,
+#logout_btn,
 #home_nav{
     color: rgb(255, 255, 255);
     font-size: 30px;
    
     margin-left: 30px;
-    padding: 5px;
-    border-radius: 20px;
+    padding: 0px;
+    
     text-decoration: none;
 }
 #navigation_container{
     gap: 50px;
     position: relative;
-    left: 1140px;
+    left: 1000px;
     bottom: 60px;
+}
+#activity_nav:hover,
+#logout_btn:hover,
+#home_nav:hover{
+    border-bottom: 3px solid rgb(255, 255, 255);
 }
