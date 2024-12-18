@@ -1,5 +1,7 @@
-
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 // Role data object
+
+import { auth,db } from "./config.js";
 
 const consumerData = {
     Plumber: "../assets/images/plumber_img.jpg",
@@ -71,3 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Add event listener to the search bar for filtering roles
 searchBar.addEventListener("input", filterRoles);
+
+
+
+
+
+// Check if user is logged in
+

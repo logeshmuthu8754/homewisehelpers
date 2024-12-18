@@ -2,23 +2,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-// Firebase Config
-const firebaseConfig = {
-    apiKey: "AIzaSyDVaNjFIWHCeYA8Tpxr_QL55TBIAyPPydU",
-    authDomain: "home-wise-helpers.firebaseapp.com",
-    projectId: "home-wise-helpers",
-    storageBucket: "home-wise-helpers.appspot.com",
-    messagingSenderId: "542965182309",
-    appId: "1:542965182309:web:5aa5d4fc51532d3b843b8c",
-    measurementId: "G-TMQKDMXBHN",
-};
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
 
-// DOM Elements
+import { auth, db } from "./config.js";
+
+
 const signupForm = document.getElementById("signupForm");
 const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
@@ -29,7 +17,7 @@ const userType = document.getElementById("userType");
 const workerRoleContainer = document.getElementById("workerRoleContainer");
 const role = document.getElementById("role");
 
-// Error Elements
+
 const nameError = document.getElementById("name-error");
 const emailError = document.getElementById("email-error");
 const passwordError = document.getElementById("password-error");
@@ -38,15 +26,15 @@ const addressError = document.getElementById("address-error");
 const userTypeError = document.getElementById("userType-error");
 const roleError = document.getElementById("role-error");
 
-// Show/Hide Worker Role Dropdown
+
 userType.addEventListener("change", () => {
     workerRoleContainer.style.display = userType.value === "worker" ? "block" : "none";
 });
 
-// Field Validation Functions
+
 const validateName = () => {
     const nameValue = nameInput.value.trim();
-    const nameRegex = /^[A-Za-z]+[A-Za-z\s]*$/; // Ensures at least one letter and allows spaces
+    const nameRegex = /^[A-Za-z]+[A-Za-z\s]*$/; 
 
     if (!nameValue) {
         nameError.textContent = "Full name is required.";
@@ -90,6 +78,9 @@ const validatePassword = () => {
     } else if (passwordValue.length < 8) {
         passwordError.textContent = "Password must be at least 8 characters.";
         return false;
+    } else if (passwordValue.length > 30) { 
+        passwordError.textContent = "Password must not exceed 30 characters.";
+        return false;
     } else if (!specialCharRegex.test(passwordValue)) {
         passwordError.textContent = "Password must include at least one special character.";
         return false;
@@ -100,6 +91,7 @@ const validatePassword = () => {
     passwordError.textContent = "";
     return true;
 };
+
 
 
 const validateConfirmPassword = () => {

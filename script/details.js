@@ -12,7 +12,7 @@ const firebaseConfig = {
     measurementId: "G-TMQKDMXBHN",
 };
 
-// Initialize Firebase
+// Initial fire base 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const searchedRole = localStorage.getItem("searchedRole")
@@ -60,6 +60,7 @@ function fetchData() {
                <p id="workernamecontainer">Worker name : <span id="welderName">${welder.name}</span></p>
                 <p id="workernamecontainer">Worker Address : <span id="welderAddress">${welder.address}</span></p>
                 <p id="workernamecontainer">Worker Email : <span id="welderEmail">${welder.email}</span></p>
+                <button id="book_now">Book Now</button>
             </div>
 `
             workerDetailsContainer.appendChild(div);
@@ -68,3 +69,51 @@ function fetchData() {
 }
 
 
+// Functionality for Popup
+document.addEventListener("DOMContentLoaded", () => {
+    const popupOverlay = document.getElementById("popupOverlay");
+    const closePopup = document.getElementById("closePopup");
+    const slotsContainer = document.getElementById("slotsContainer");
+
+    // Dummy Slot Data
+    const slots = [
+        { time: "9:00 AM - 10:00 AM", booked: false },
+        { time: "10:00 AM - 11:00 AM", booked: false },
+        { time: "11:00 AM - 12:00 PM", booked: true },
+        { time: "12:00 PM - 1:00 PM", booked: false },
+        { time: "2:00 PM - 3:00 PM", booked: true },
+        { time: "3:00 PM - 4:00 PM", booked: false },
+    ];
+
+    // Event listener to close popup
+    closePopup.addEventListener("click", () => {
+        popupOverlay.classList.add("hidden");
+    });
+
+    // Event listener for "Book Now" buttons
+    document.body.addEventListener("click", (e) => {
+        if (e.target && e.target.id === "book_now") {
+            popupOverlay.classList.remove("hidden");
+            renderSlots();
+        }
+    });
+
+    // Render slots inside the popup
+    function renderSlots() {
+        slotsContainer.innerHTML = ""; // Clear previous slots
+        slots.forEach((slot, index) => {
+            const slotBtn = document.createElement("button");
+            slotBtn.className = slot.booked ? "slot-btn booked" : "slot-btn";
+            slotBtn.textContent = slot.time;
+
+            if (!slot.booked) {
+                slotBtn.addEventListener("click", () => {
+                    alert(`Slot "${slot.time}" booked successfully!`);
+                    slot.booked = true;
+                    renderSlots(); // Refresh slots
+                });
+            }
+            slotsContainer.appendChild(slotBtn);
+        });
+    }
+});

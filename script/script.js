@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { auth,db } from "./config.js";
 // Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyDVaNjFIWHCeYA8Tpxr_QL55TBIAyPPydU",
@@ -14,9 +15,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+
 
 // DOM Elements
 const loginForm = document.getElementById("loginForm");
@@ -109,9 +108,12 @@ loginForm.addEventListener("submit", async (event) => {
             if (userData.userType === userType) {
                 // Redirect based on userType
                 if (userType === "worker") {
+                    localStorage.setItem("userType",JSON.stringify("worker"))
                     alert("Worker Login Successful!");
+
                     window.location.href = "/pages/worker_home.html"; // Redirect to worker home page
                 } else if (userType === "user") {
+                    localStorage.setItem("userType",JSON.stringify("user"))
                     alert("User Login Successful!");
                     window.location.href = "/pages/home.html"; // Redirect to user home page
                 }
@@ -130,5 +132,35 @@ loginForm.addEventListener("submit", async (event) => {
         } else {
             passwordError.textContent = "An error occurred. Please try again.";
         }
+    }
+});
+
+
+
+
+// Redirect to home page if already logged in
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        
+        
+        // Check user type in Firestore or localStorage
+        const userType = JSON.parse(localStorage.getItem("userType"));
+        console.log(userType) // Store userType at login
+        console.log(userType === "worker" && window.location.pathname != "../pages/worker_home.html")
+        if (userType === "worker" && window.location.pathname != "../pages/worker_home.html") {
+           
+            
+            console.log("hi")
+            window.location.replace("../pages/worker_home.html") ; // Redirect workers
+        } else if (userType === "user" && window.location.pathname != "../pages/home.html") {
+            console.log("ki");
+            window.location.replace( "../pages/home.html"); // Redirect consumers
+        }
+        
+    }
+    else if(window.location.pathname != "/index.html"){
+        
+        
+        window.location.replace("/index.html") 
     }
 });

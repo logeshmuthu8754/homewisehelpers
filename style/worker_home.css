@@ -84,9 +84,9 @@ justify-content: end;
 #plumber_logo,
 #activity_nav,
 #home_nav{
-    color: rgb(5, 5, 6);
+    color: rgb(250, 250, 251);
     font-size: 30px;
-    background-color:rgb(171, 241, 241);
+   
     margin-left: 30px;
     padding: 5px;
     border-radius: 20px;

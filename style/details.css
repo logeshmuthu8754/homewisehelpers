@@ -55,8 +55,86 @@ align-self: flex-start;
 #details_back{
     color: rgb(5, 5, 6);
     font-size: 30px;
-    background-color:azure;
+    background-color:rgb(127, 129, 129);
     margin-left: 30px;
     padding: 5px;
     border-radius: 10px;
+}
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-overlay.hidden {
+    display: none;
+}
+
+/* Popup Content */
+.popup-content {
+    background-color: white;
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff4b4b;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 14px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+/* Slots Container */
+.slots-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.slot-btn {
+    padding: 8px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+}
+
+.slot-btn.booked {
+    background: #ff4b4b;
+    cursor: not-allowed;
+}
+
+#book_now{
+    position: relative;
+    left: 650px;
+    bottom: 20px;
+    font-size: 20px;
+    border-radius: 5px;
+    
+}
+#book_now:hover{
+    background-color: #4df753;
 }
