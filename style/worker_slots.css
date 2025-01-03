@@ -88,7 +88,7 @@ justify-content: end;
     font-size: 30px;
     margin-left: 30px;
     padding: 5px;
-    border-radius: 20px;
+    border-radius: 0px;
     text-decoration: none;
 }
 #navigation_container{
@@ -96,4 +96,8 @@ justify-content: end;
     position: relative;
     left: 820px;
     bottom: 80px;
+}
+#plumber_logo:hover,
+#logout_btn:hover{
+    border-bottom: 3px solid rgb(255, 255, 255);
 }

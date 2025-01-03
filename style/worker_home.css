@@ -96,7 +96,7 @@ justify-content: end;
 #navigation_container{
     gap: 50px;
     position: relative;
-    left: 800px;
+    left: 820px;
     bottom: 150px;
 }
 #plumber_logo:hover,

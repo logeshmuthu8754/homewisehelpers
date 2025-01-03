@@ -1,5 +1,16 @@
+// Firebase Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    doc,
+    onSnapshot,
+    updateDoc,
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // Firebase Config
 const firebaseConfig = {
@@ -12,108 +23,172 @@ const firebaseConfig = {
     measurementId: "G-TMQKDMXBHN",
 };
 
-// Initial fire base 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const searchedRole = localStorage.getItem("searchedRole")
+
+const searchedRole = localStorage.getItem("searchedRole");
+let currentUserId = "user123"; // Replace with actual authenticated user ID
+
+// Consumer - Slot Booking Page
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("pageTitle").innerText = searchedRole;
-    fetchData()
+    fetchData();
+});
 
+// Fetch workers based on role and render them
+async function fetchData() {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("role", "==", searchedRole), where("userType", "==", "worker"));
 
-})
-
-function fetchData() {
-    // Function to fetch workers with role "Welder" and userType "worker"
-    async function fetchWeldersAndWorkers() {
-        const usersRef = collection(db, "users"); // Reference to the users collection
-        const q = query(
-            usersRef,
-            where("role", "==", searchedRole),
-            where("userType", "==", "worker")
-        );
-
-        try {
-            const querySnapshot = await getDocs(q);
-            const welders = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                welders.push({ id: doc.id, ...data });
-            });
-
-            console.log("Welders who are workers:", welders); // Output fetched welders
-            return welders;
-        } catch (error) {
-            console.error("Error fetching welders who are workers:", error);
-        }
+    try {
+        const querySnapshot = await getDocs(q);
+        const workers = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            workers.push({ id: doc.id, ...data });
+        });
+        renderWorkers(workers);
+    } catch (error) {
+        console.error("Error fetching workers:", error);
     }
+}
 
+function renderWorkers(workers) {
     const workerDetailsContainer = document.getElementById("workerDetails");
-    // Fetch welders and use their data
-    fetchWeldersAndWorkers().then((welders) => {
-        welders.forEach((welder) => {
-            const div = document.createElement("div");
-            div.className = "workerCard"
-            div.innerHTML = `     
+    workerDetailsContainer.innerHTML = "";
+    workers.forEach((worker) => {
+        const div = document.createElement("div");
+        div.className = "workerCard";
+        div.innerHTML = `
             <img id="profilimg_worker" src="../assets/images/profile_img.webp" alt="profile img">
             <div class="workerDetails">
-               <p id="workernamecontainer">Worker name : <span id="welderName">${welder.name}</span></p>
-                <p id="workernamecontainer">Worker Address : <span id="welderAddress">${welder.address}</span></p>
-                <p id="workernamecontainer">Worker Email : <span id="welderEmail">${welder.email}</span></p>
-                <button id="book_now">Book Now</button>
-            </div>
-`
-            workerDetailsContainer.appendChild(div);
+               <p>Worker name: <span>${worker.name}</span></p>
+               <p>Worker Address: <span>${worker.address}</span></p>
+               <p>Worker Email: <span>${worker.email}</span></p>
+               <button class="book_now" data-worker-id="${worker.id}" data-worker-name="${worker.name}">Book Now</button>
+            </div>`;
+        workerDetailsContainer.appendChild(div);
+    });
+
+    document.querySelectorAll(".book_now").forEach((button) => {
+        button.addEventListener("click", (e) => {
+            const workerId = e.target.dataset.workerId;
+            const workerName = e.target.dataset.workerName;
+            openBookingPopup(workerId, workerName);
         });
     });
 }
 
+async function sendBookingRequest(workerId, workerName, slotTime) {
+    try {
+        // Query to check if the slot already exists
+        const q = query(
+            collection(db, "requests"),
+            where("workerId", "==", workerId),
+            where("slotTime", "==", slotTime)
+        );
 
-// Functionality for Popup
-document.addEventListener("DOMContentLoaded", () => {
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            const existingDoc = querySnapshot.docs[0];
+            const existingStatus = existingDoc.data().status;
+
+            if (existingStatus !== "available") {
+                alert("This slot is not available. Please choose another slot.");
+                return;
+            }
+
+            // If slot exists and is available, update its status to "pending"
+            await updateDoc(existingDoc.ref, {
+                userId: currentUserId,
+                status: "pending",
+            });
+
+            alert(`Booking request sent to ${workerName} for ${slotTime}.`);
+            return;
+        }
+
+        // If slot does not exist, create a new entry
+        await addDoc(collection(db, "requests"), {
+            userId: currentUserId,
+            workerId,
+            workerName,
+            slotTime,
+            status: "pending", // Set initial status
+        });
+
+        alert(`Booking request sent to ${workerName} for ${slotTime}.`);
+    } catch (error) {
+        console.error("Error handling booking request:", error);
+    }
+}
+
+
+
+
+const defaultSlots = [
+    { display: "9:00 AM-10:00 AM", dbFormat: "9-10" },
+    { display: "10:00 AM-11:00 AM", dbFormat: "10-11" },
+    { display: "11:00 AM-12:00 PM", dbFormat: "11-12" },
+    { display: "12:00 PM-1:00 PM", dbFormat: "12-1" },
+    { display: "1:00 PM-2:00 PM", dbFormat: "1-2" },
+    { display: "2:00 PM-3:00 PM", dbFormat: "2-3" },
+    { display: "3:00 PM-4:00 PM", dbFormat: "3-4" },
+    { display: "4:00 PM-5:00 PM", dbFormat: "4-5" }
+];
+
+
+function openBookingPopup(workerId, workerName) {
     const popupOverlay = document.getElementById("popupOverlay");
     const closePopup = document.getElementById("closePopup");
     const slotsContainer = document.getElementById("slotsContainer");
 
-    // Dummy Slot Data
-    const slots = [
-        { time: "9:00 AM - 10:00 AM", booked: false },
-        { time: "10:00 AM - 11:00 AM", booked: false },
-        { time: "11:00 AM - 12:00 PM", booked: true },
-        { time: "12:00 PM - 1:00 PM", booked: false },
-        { time: "2:00 PM - 3:00 PM", booked: true },
-        { time: "3:00 PM - 4:00 PM", booked: false },
-    ];
+    popupOverlay.classList.remove("hidden");
 
-    // Event listener to close popup
     closePopup.addEventListener("click", () => {
         popupOverlay.classList.add("hidden");
     });
 
-    // Event listener for "Book Now" buttons
-    document.body.addEventListener("click", (e) => {
-        if (e.target && e.target.id === "book_now") {
-            popupOverlay.classList.remove("hidden");
-            renderSlots();
-        }
-    });
+    const q = query(collection(db, "requests"), where("workerId", "==", workerId));
 
-    // Render slots inside the popup
-    function renderSlots() {
-        slotsContainer.innerHTML = ""; // Clear previous slots
-        slots.forEach((slot, index) => {
-            const slotBtn = document.createElement("button");
-            slotBtn.className = slot.booked ? "slot-btn booked" : "slot-btn";
-            slotBtn.textContent = slot.time;
-
-            if (!slot.booked) {
-                slotBtn.addEventListener("click", () => {
-                    alert(`Slot "${slot.time}" booked successfully!`);
-                    slot.booked = true;
-                    renderSlots(); // Refresh slots
-                });
-            }
-            slotsContainer.appendChild(slotBtn);
+    onSnapshot(q, async (snapshot) => {
+        // Create a map for slot statuses
+        const slotStatusMap = {};
+        snapshot.forEach((doc) => {
+            const request = doc.data();
+            slotStatusMap[request.slotTime] = request.status;
         });
-    }
-});
+
+        // Render slots with updated statuses
+        slotsContainer.innerHTML = "";
+        defaultSlots.forEach(({ display, dbFormat }) => {
+            const status = slotStatusMap[dbFormat] || "available";
+            const slotDiv = document.createElement("div");
+            slotDiv.className = "slot-btn";
+
+            if (status === "available") {
+                slotDiv.style.backgroundColor = "green";
+                slotDiv.textContent = `${display} - Available`;
+                slotDiv.addEventListener("click", () => {
+                    sendBookingRequest(workerId, workerName, dbFormat);
+                });
+            } else if (status === "accepted") {
+                slotDiv.style.backgroundColor = "gray";
+                slotDiv.style.cursor = "not-allowed";
+                slotDiv.textContent = `${display} - Booked`;
+            } else if (status === "rejected") {
+                slotDiv.style.backgroundColor = "red";
+                slotDiv.style.cursor = "not-allowed";
+                slotDiv.textContent = `${display} - Rejected`;
+            } else {
+                slotDiv.style.backgroundColor = "blue";
+                slotDiv.style.cursor = "not-allowed";
+                slotDiv.textContent = `${display} - Waiting for confirmation`;
+            }
+
+            slotsContainer.appendChild(slotDiv);
+        });
+    });
+}
