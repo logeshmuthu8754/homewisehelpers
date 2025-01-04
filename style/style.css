@@ -1,19 +1,22 @@
-body{
-
-    
+body {
+    background:white;
     width: 100%;
-  padding:0%;
-    margin: 0%;
-    margin-top: 0;
-   background:linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
+    padding: 0;
+    margin: 0;
+    height: 150vh;
 }
-.heading_baground{
+
+.heading_baground {
     border-bottom: 5px solid white;
     padding: 0.5px;
-    height: 180px;
-   background:linear-gradient(90deg, rgba(0,0,0,1) 8%, rgba(39,80,85,1) 26%, rgba(35,126,138,1) 44%, rgba(40,121,128,1) 53%, rgba(32,114,120,1) 68%, rgba(31,99,107,1) 78%, rgba(1,17,11,1) 92%);
-
+    height: 100px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background:rgb(226, 192, 23);
 }
+
 /* .head{
     color: white;
     margin-left: 30px;
@@ -38,24 +41,22 @@ body{
     margin-top: 200px;
   
 } */
-
-
-.head{
-    color: white;
+.head {
+    color: black;
     margin-left: 30px;
-    font-size: 60px;
-    margin-top: 20px; 
-    margin-bottom: 30px; 
-
+    font-size: 50px;
+    margin-top: 5px;
 }
 
-.sub_head{
-    color: rgb(226, 192, 23);
+.sub_head {
+    color: white;
     margin-left: 70px;
-    font-size: 35px;
-    margin-top: -40px; 
-    margin-bottom: 30px; 
+    font-size: 30px;
+    margin-top: -50px; 
 }
+
+
+
 
 .worker {
     background-color: black;
@@ -139,7 +140,7 @@ a{
  margin-left: 30px;
 } */
 .container {
-    background-color: rgba(239, 223, 223, 0.9);
+    background-color:aliceblue;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
@@ -147,6 +148,7 @@ a{
     text-align: center;
     margin-left: 550px;
     margin-top: 60px;
+    border: 1px solid black;
 }
 #Form {
     display: flex;

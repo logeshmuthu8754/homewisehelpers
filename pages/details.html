@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Wise Helpers</title>
     <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/home.css">
     <link rel="stylesheet" href="../style/details.css">
-
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+/>
 </head>
 <body>
-    <div class="heading_baground">
-        <div class="home_div">
-        <h1 class="head">Home</h1></div>
-       <div class="sub_head"> <h2>Wise Helpers</h2>
-    </div>
-    <a id="details_back" href="../pages/home.html"> BACK </a>
-    <h2 id="pageTitle">role Page</h2>
-
+    <nav>
+        <div class="logo">
+            <img src="../assets/images/hwh_logo.png" alt="">
+        </div>
+        <div class="nav-items">
+           <a href="../pages/home.html" id="home_nav">Home</a>
+           <a href="../pages/activity.html" id="activity_nav"> My Activity</a>
+           <a id="logout_btn" >Logout</a>
+        </div>
+    </nav>
+    <div class="main-container">
+        <a id="details_back" href="../pages/home.html"><i class='fas fa-caret-left'></i> Back</a>
+        <h2 id="pageTitle">role Page</h2>
 
     <div id="workerDetails"></div>
     <!-- Popup Structure -->
@@ -27,14 +40,9 @@
         <div class="slots-container" id="slotsContainer">
             <!-- Slots will be dynamically added here -->
         </div>
-        <main>
-        <h2>Available Slots</h2>
-        <div id="slotList">
-            <!-- Slots will be dynamically added here -->
-        </div>
-    </main>
     </div>
 </div>
+    </div>
 
 
     <script src="../script/details.js" type="module"></script>

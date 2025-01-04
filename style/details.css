@@ -1,65 +1,121 @@
-.workerCard{
-display: flex;
-flex-direction: row;
-background-color:azure;
-border-radius: 10px;
-height:fit-content;
-width: 80%;
-margin: 40px;
-border-bottom: 10px solid rgb(0, 0, 0);
-margin-left: 100px;
-border-top: 20px solid rgb(0, 0, 0);
-
-
-
+/* General Reset */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
 }
 
-#workerDetails{
-  padding-bottom: 100px;
-  padding-left: 100px;
-    flex-wrap: wrap;
-    display: inline;
-}
-#welderName,
-#welderAddress,
-#welderEmail{
-    font-size: 30px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
-}
-#workernamecontainer{
-    font-size: 30px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    margin-left: 150px;
-}
+
 #pageTitle{
-    color: azure; 
-   
      text-align: center;
       font-size: 40px;
-     background-color: black;
-     display: inline; 
-     margin-left: 450px;
-      border-radius: 15px; 
-      padding: 8px;
-      width: 300px;
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      color: blue;
+    text-align: center;
+}
 
-}
-#profilimg_worker{
-    width: 200px;
-    height: 200px;
-   margin-top: 30px;
-   margin-left: 50px;
-align-self: flex-start;
-}
-#details_back{
-    color: rgb(5, 5, 6);
-    font-size: 30px;
-    background-color:rgb(127, 129, 129);
+#details_back {
+    font-size: 1rem;
+    background-color:rgb(92, 94, 94);
+    color: rgb(255, 255, 255);
     margin-left: 30px;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
+    position: fixed;
+    top: 10%;
+    text-decoration: none;
+    transition: 300ms all ease-in-out;
 }
+
+#details_back:hover{
+    color: black;
+    background-color: rgb(132, 132, 132);
+    transform: scale(.95);
+}
+#details_back:active{
+    background-color:rgb(92, 94, 94);
+    color: rgb(255, 255, 255);
+    transform: scale(1.05);
+}
+
+
+
+#workerDetails{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px;
+    justify-content: center;
+
+}
+
+
+/* Worker Card */
+.workerCard {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;flex-direction: column;
+    align-items: center;
+}
+
+.workerCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Worker Image */
+#profilimg_worker {
+    width: auto;
+    height: 200px;
+}
+
+/* Worker Content */
+.workerContent {
+    padding: 16px;
+}
+
+/* Worker Details */
+.workerDetails p {
+    margin: 8px 0;
+    font-size: 11px;
+    color: #333;
+}
+.workerDetails p span{
+    margin: 8px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.workerDetails p strong {
+    color: #555;
+}
+
+/* Book Now Button */
+.book_now {
+    margin-top: 12px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.book_now:hover {
+    background-color: #0056b3;
+}
+
+
 /* Popup Overlay */
 .popup-overlay {
     position: fixed;
@@ -138,3 +194,4 @@ align-self: flex-start;
 #book_now:hover{
     background-color: #4df753;
 }
+

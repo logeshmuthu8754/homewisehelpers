@@ -4,15 +4,15 @@ import { auth } from "./config.js"; // Ensure auth is imported correctly from yo
 const consumerData = {
     Plumber: "../assets/images/plumber_img.jpg",
     Carpenter: "../assets/images/carpentar_img.jpg",
-    Electrician: "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
+    Electrician: "../assets/images/electrician_img.webp",
     Mason: "../assets/images/mason_img.jpg",
-    "AC Technician": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
-    "Acting Driver": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
-    "Bike Mechanic": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
+    "AC Technician": "../assets/images/ac_technistion.webp",
+    "Acting Driver": "../assets/images/accting_driver_img.jpg",
+    "Bike Mechanic": "../assets/images/bike_mechanic.webp",
     "TV Technician": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
-    "House Cleaner": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
+    "House Cleaner": "../assets/images/house_clener.webp",
     "Water Tank Cleaner": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
-    "Car Mechanic": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
+    "Car Mechanic": "../assets/images/car_mechanic.webp",
     Welder: "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
 };
 
@@ -28,8 +28,10 @@ function renderRoles(roleNames) {
         div.className = "role";
         div.dataset.name = roleName;
         div.innerHTML = `
+            <div id="role_container">
             <img class="role-logo" src="${consumerData[roleName]}" alt="${roleName}_img">
-            <p class="role-link">${roleName} ></p>
+            <p class="role-link">${roleName} <i class='fas fa-caret-right' ></i></p>
+            <div>
         `;
         roleContainer.appendChild(div);
 

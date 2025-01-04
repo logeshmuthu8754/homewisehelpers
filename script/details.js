@@ -1,34 +1,46 @@
-// Firebase Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import {
-    getFirestore,
-    collection,
-    query,
-    where,
-    getDocs,
-    addDoc,
-    doc,
-    onSnapshot,
-    updateDoc,
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // Firebase Config
 const firebaseConfig = {
-    apiKey: "AIzaSyDVaNjFIWHCeYA8Tpxr_QL55TBIAyPPydU",
-    authDomain: "home-wise-helpers.firebaseapp.com",
-    projectId: "home-wise-helpers",
-    storageBucket: "home-wise-helpers.appspot.com",
-    messagingSenderId: "542965182309",
-    appId: "1:542965182309:web:5aa5d4fc51532d3b843b8c",
-    measurementId: "G-TMQKDMXBHN",
+  apiKey: "AIzaSyDVaNjFIWHCeYA8Tpxr_QL55TBIAyPPydU",
+  authDomain: "home-wise-helpers.firebaseapp.com",
+  projectId: "home-wise-helpers",
+  storageBucket: "home-wise-helpers.appspot.com",
+  messagingSenderId: "542965182309",
+  appId: "1:542965182309:web:5aa5d4fc51532d3b843b8c",
+  measurementId: "G-TMQKDMXBHN",
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const app = initializeApp(firebaseConfig); // Initialize Firebase App
+const auth = getAuth(app); // Pass the app instance to getAuth
+const db = getFirestore(app); // Initialize Firestore
+
+console.log("Firebase initialized successfully!");
 
 const searchedRole = localStorage.getItem("searchedRole");
-let currentUserId = "user123"; // Replace with actual authenticated user ID
+
+let currentUserId ;
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUserId=user.uid
+      console.log("User UID:", user.uid);
+    } else {
+      console.log("No user signed in");
+    }
+  });
 
 // Consumer - Slot Booking Page
 document.addEventListener("DOMContentLoaded", () => {
@@ -61,13 +73,15 @@ function renderWorkers(workers) {
         const div = document.createElement("div");
         div.className = "workerCard";
         div.innerHTML = `
-            <img id="profilimg_worker" src="../assets/images/profile_img.webp" alt="profile img">
+            <img id="profilimg_worker" src="../assets/images/userImage.png" alt="Profile Image">
+        <div class="workerContent">
             <div class="workerDetails">
-               <p>Worker name: <span>${worker.name}</span></p>
-               <p>Worker Address: <span>${worker.address}</span></p>
-               <p>Worker Email: <span>${worker.email}</span></p>
-               <button class="book_now" data-worker-id="${worker.id}" data-worker-name="${worker.name}">Book Now</button>
-            </div>`;
+                <p><strong>Worker Name:</strong> <span>${worker.name}</span></p>
+                <p><strong>Address:</strong> <span>${worker.address}</span></p>
+                <p><strong>Email:</strong> <span>${worker.email}</span></p>
+            </div>
+            <button class="book_now" data-worker-id="${worker.id}" data-worker-name="${worker.name}">Book Now</button>
+        </div>`;
         workerDetailsContainer.appendChild(div);
     });
 
