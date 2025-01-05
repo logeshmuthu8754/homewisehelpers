@@ -195,3 +195,49 @@ body {
     background-color: #4df753;
 }
 
+
+.headingForPopup{
+    display: flex;
+    height: 2rem;
+    margin-bottom: .3rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 2rem;
+}
+
+#calendar {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+  }
+  #calendar table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  #calendar th, #calendar td {
+    text-align: center;
+    padding: 5px;
+  }
+  #calendar .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #calendar button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #calendar button:hover {
+    background-color: #0056b3;
+  }
+  #calendar .selected {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+  }

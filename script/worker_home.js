@@ -6,7 +6,7 @@ import {
     where,
     collection,
     onSnapshot,
-    updateDoc,
+    updateDoc,getDoc,addDoc,getDocs,
     doc,
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -28,6 +28,18 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 let email = ""
 // Redirect unauthorized users and initialize worker-specific logic
+
+
+let slots={
+    "9-10": "9:00 AM-10:00 AM",
+    "10-11": "10:00 AM-11:00 AM",
+    "11-12": "11:00 AM-12:00 AM",
+    "12-1": "12:00 PM-1:00 PM",
+    "1-2": "1:00 PM-2:00 PM",
+    "2-3": "2:00 PM-3:00 PM",
+    "3-4": "3:00 PM-4:00 PM",
+    "4-5": "4:00 PM-5:00 PM"
+}
 onAuthStateChanged(auth, (user) => {
     if (!user) {
         console.warn("Unauthorized access. Redirecting to login page.");
@@ -57,34 +69,52 @@ document.getElementById("logout_btn").addEventListener("click", () => {
 function initializeWorkerRequests(workerId) {
     const requestList = document.getElementById("requestList");
 
-    function renderRequest(requestId, time, userName) {
-        const listItem = document.createElement("li");
-        listItem.textContent = `Slot: ${time} | User: ${userName}`;
-        const acceptBtn = document.createElement("button");
-        acceptBtn.textContent = "Accept";
-        acceptBtn.addEventListener("click", () => handleAccept(requestId, time));
 
-        const rejectBtn = document.createElement("button");
-        rejectBtn.textContent = "Reject";
-        rejectBtn.addEventListener("click", () => handleReject(requestId));
-
-        listItem.appendChild(acceptBtn);
-        listItem.appendChild(rejectBtn);
-        requestList.appendChild(listItem);
-    }
-
-    async function handleAccept(requestId, time) {
+    async function handleAccept(requestId, time, workerId, selectedDate, userId) {
+        console.log("Handling accept for requestId:", requestId); 
+    
+        if (!requestId) {
+            console.error("Request ID is missing or invalid.");
+            return;
+        }
+    
         try {
+            // Step 1: Accept the current request
             await updateDoc(doc(db, "requests", requestId), {
                 status: "accepted", // Update request status
                 booked: true,
             });
+            console.log("New worker slot document created.");
             alert(`Slot "${time}" has been accepted.`);
+    
+            // Step 2: Reject all other requests for the same time slot
+            const qForConflictingRequests = query(
+                collection(db, "requests"),
+                where("workerId", "==", workerId),
+                where("slotTime", "==", time),
+                where("date","==",selectedDate),
+                where("status", "==", "pending") // Only target pending requests
+            );
+    
+            const snapshot = await getDocs(qForConflictingRequests);
+            snapshot.forEach(async (conflictingDoc) => {
+                console.log(conflictingDoc);
+                
+                const conflictingRequestId = conflictingDoc.id;
+                await updateDoc(doc(db, "requests", conflictingRequestId), {
+                    status: "rejectedForSomeOne", // Reject the conflicting request
+                });
+                console.log(`Request with ID ${conflictingRequestId} has been rejected.`);
+            });
+    
         } catch (error) {
             console.error("Error accepting request:", error);
         }
     }
+    
+    
 
+    // Function to handle reject button
     async function handleReject(requestId) {
         try {
             await updateDoc(doc(db, "requests", requestId), {
@@ -101,40 +131,77 @@ function initializeWorkerRequests(workerId) {
         collection(db, "requests"),
         where("workerId", "==", workerId) // Filter requests for the current worker
     );
+   
 
-    onSnapshot(qu, (snapshot) => {
+    async function fetchUserData(userId) {
+        const qForUser = doc(db, "users", userId);
+        try {
+          const docSnapshot = await getDoc(qForUser);
+          if (docSnapshot.exists()) {
+            return docSnapshot.data();
+          } else {
+            console.log("No such document!");
+            return null;
+          }
+        } catch (error) {
+          console.error("Error getting document:", error);
+          return null;
+        }
+      }
+    
+      onSnapshot(qu, async (snapshot) => {
         requestList.innerHTML = ""; // Clear previous entries
-        snapshot.forEach((doc) => {
-            const request = doc.data();
-            console.log(request);
-            renderRequest(doc.id, request.slotTime);
-        });
-    });
-
-    // const q = query(
-    //     collection(db, "users"),
-    //     where("email", "==", email) // Filter requests for the current worker
-    // );
-
-    // onSnapshot(q, (snapshot) => {
-    //     requestList.innerHTML = ""; // Clear previous entries
-    //     snapshot.forEach((doc) => {
-    //         const request = doc.data();
-    //         console.log(request);
+    
+        for (const doc of snapshot.docs) {
             
-    //         renderRequest(doc.id,  request.slotTime ,request.name);
-    //     });
-    // });
+            
+          const request = doc.data();
+          if(request.status=="pending"){
+            // Wait for user data to be fetched
+          const userData = await fetchUserData(request.userId);
+          console.log(userData);
+          
+        const userName = userData ? userData.name : 'Unknown';
+        const userAddress = userData.address;
+        const slotTime = request.slotTime;
+        const slotDate = request.date;
+  
+        // Create the card HTML structure
+        const listItem = document.createElement("li");
+        listItem.classList.add("request-card");
+  
+        listItem.innerHTML = `
+          <div class="details">
+            <p>Slot: ${slots[slotTime]}</p>
+            <p>Slot: ${slotDate}</p>
+            <p>User: ${userName}</p>
+            <p>Address: ${userAddress}</p>
+          </div>
+          <div class="buttons">
+            <button id="accept-${request.id}">Accept</button>
+            <button id="reject-${request.id}">Reject</button>
+          </div>
+        `;
+  
+        // Attach event listeners to buttons
+        const acceptBtn = listItem.querySelector(`#accept-${request.id}`);
+        const rejectBtn = listItem.querySelector(`#reject-${request.id}`);
+        console.log(request);
+        
+        
+        acceptBtn.addEventListener("click", () => handleAccept(doc.id, request.slotTime,request.workerId,request.date,request.userId));
+        rejectBtn.addEventListener("click", () => handleReject(doc.id));
+  
+        requestList.appendChild(listItem); // Append the list item (card) to the list
+          }
+          
+        }
+      });
+    
+
+
 }
-// Worker - Request Handling
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        console.warn("Unauthorized access. Redirecting to login page.");
-        window.location.href = "../index.html";
-    } else {
-        initializeWorkerRequests(user.uid);
-    }
-});
+
 
 document.getElementById("logout_btn").addEventListener("click", () => {
     if (confirm("Are you sure you want to log out?")) {

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Wise Helpers</title>
-    <!-- <link rel="stylesheet" href="../style/worker_slots.css"> -->
     <link rel="stylesheet" href="../style/home.css">
+    <link rel="stylesheet" href="../style/workerHome.css">
 </head>
 <body>
 
@@ -15,11 +15,18 @@
         </div>
         <div class="nav-items">
             <a id="plumber_logo" href="./worker_home.html">Home</a>
-            <a id="plumber_logo" href="./worker_confirm_slots.html">Confirm slots</a>
-            <a id="plumber_logo" href="./worker_completed_slots.html">Pending slots</a>
+            <a id="plumber_logo" href="./worker_pendingWorks.html">Pending works</a>
+            <a id="plumber_logo" href="./worker_activities.html">Activites</a>
             <a id="logout_btn">Logout</a>
         </div>
     </nav>
-    <h2 style="color: azure; "> Slots Confirm Page</h2>
+
+    <main>
+        <h2>Pending Works</h2>
+        <ul id="pendingWorksList"></ul>
+    </main>
+
+
+    <script type="module" src="../script//worker_pendingWorks.js"></script>
 </body>
 </html>

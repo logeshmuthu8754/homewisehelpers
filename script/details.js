@@ -24,11 +24,33 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig); // Initialize Firebase App
-const auth = getAuth(app); // Pass the app instance to getAuth
-const db = getFirestore(app); // Initialize Firestore
+const app = initializeApp(firebaseConfig); 
+const auth = getAuth(app); 
+const db = getFirestore(app); 
+let selectedDate;
+let workerId;
+let workerName;
 
-console.log("Firebase initialized successfully!");
+const tomorrowDate = () => {
+    const now = new Date();
+    const offset = 5.5 * 60 * 60 * 1000; 
+    const istTime = new Date(now.getTime() + offset);
+    istTime.setDate(istTime.getDate() + 1);
+    return istTime.toISOString().split("T")[0];
+};
+const fourDaysLater = () => {
+    const now = new Date();
+    const offset = 5.5 * 60 * 60 * 1000; 
+    const istTime = new Date(now.getTime() + offset);
+    istTime.setDate(istTime.getDate() + 4);
+    return istTime.toISOString().split("T")[0];
+};
+const calendar = document.getElementById("calendar");
+calendar.setAttribute("min", tomorrowDate());
+calendar.setAttribute("max", fourDaysLater());
+calendar.setAttribute("value", tomorrowDate());
+
+selectedDate=tomorrowDate()
 
 const searchedRole = localStorage.getItem("searchedRole");
 
@@ -87,20 +109,23 @@ function renderWorkers(workers) {
 
     document.querySelectorAll(".book_now").forEach((button) => {
         button.addEventListener("click", (e) => {
-            const workerId = e.target.dataset.workerId;
-            const workerName = e.target.dataset.workerName;
-            openBookingPopup(workerId, workerName);
+            workerId = e.target.dataset.workerId;
+            workerName = e.target.dataset.workerName;
+            openBookingPopup();
         });
     });
 }
-
-async function sendBookingRequest(workerId, workerName, slotTime) {
+async function sendBookingRequest(slotTime) {
     try {
         // Query to check if the slot already exists
+
+  
         const q = query(
             collection(db, "requests"),
             where("workerId", "==", workerId),
-            where("slotTime", "==", slotTime)
+            where("slotTime", "==", slotTime),
+            where("userId","==",currentUserId),
+            where("date","==",selectedDate)
         );
 
         const querySnapshot = await getDocs(q);
@@ -109,10 +134,10 @@ async function sendBookingRequest(workerId, workerName, slotTime) {
             const existingDoc = querySnapshot.docs[0];
             const existingStatus = existingDoc.data().status;
 
-            if (existingStatus !== "available") {
-                alert("This slot is not available. Please choose another slot.");
-                return;
-            }
+            // if (existingStatus !== "available") {
+            //     alert("This slot is not available. Please choose another slot.");
+            //     return;
+            // }
 
             // If slot exists and is available, update its status to "pending"
             await updateDoc(existingDoc.ref, {
@@ -130,7 +155,8 @@ async function sendBookingRequest(workerId, workerName, slotTime) {
             workerId,
             workerName,
             slotTime,
-            status: "pending", // Set initial status
+            status: "pending",
+            date:selectedDate,
         });
 
         alert(`Booking request sent to ${workerName} for ${slotTime}.`);
@@ -141,6 +167,10 @@ async function sendBookingRequest(workerId, workerName, slotTime) {
 
 
 
+calendar.addEventListener("change", (event) => {
+    selectedDate=event.target.value;
+    openBookingPopup()
+  });
 
 const defaultSlots = [
     { display: "9:00 AM-10:00 AM", dbFormat: "9-10" },
@@ -154,7 +184,7 @@ const defaultSlots = [
 ];
 
 
-function openBookingPopup(workerId, workerName) {
+function openBookingPopup() {
     const popupOverlay = document.getElementById("popupOverlay");
     const closePopup = document.getElementById("closePopup");
     const slotsContainer = document.getElementById("slotsContainer");
@@ -163,31 +193,72 @@ function openBookingPopup(workerId, workerName) {
 
     closePopup.addEventListener("click", () => {
         popupOverlay.classList.add("hidden");
+        selectedDate = null;
     });
 
-    const q = query(collection(db, "requests"), where("workerId", "==", workerId));
+    // Query to get requests for the selected date and worker
+    const q = query(collection(db, "requests"), where("workerId", "==", workerId), where("date", "==", selectedDate));
 
     onSnapshot(q, async (snapshot) => {
-        // Create a map for slot statuses
-        const slotStatusMap = {};
+        const slotStatusMap = {};  // Object to map slotTime to request status
+
         snapshot.forEach((doc) => {
             const request = doc.data();
-            slotStatusMap[request.slotTime] = request.status;
+            console.log("Request Data:", request);
+
+            // If the current user is not the one in the request
+            if (currentUserId !== request.userId) {
+                // Handle rejected or pending request: Mark the slot as available for others
+                if (request.status === "rejected" || request.status === "pending") {
+                    slotStatusMap[request.slotTime] = "available"; 
+                } else if (request.status === "accepted") {
+                    // Handle accepted request: Mark the slot as unavailable for all users
+                    slotStatusMap[request.slotTime] = "unavailable"; 
+                    console.log(`Slot marked as unavailable due to accepted request for slot ${request.slotTime}`);
+                }
+            } else {
+                // If the userId is the same as the current user, use the request's actual status
+                slotStatusMap[request.slotTime] = request.status; 
+            }
         });
+
+        // Debugging output to see final slotStatusMap
+        console.log("Final Slot Status Map:", slotStatusMap);
 
         // Render slots with updated statuses
         slotsContainer.innerHTML = "";
         defaultSlots.forEach(({ display, dbFormat }) => {
-            const status = slotStatusMap[dbFormat] || "available";
+            let status = "available";  // Default status
+
+            // Check the status of each slot from the requests
+            if (slotStatusMap[dbFormat] === "unavailable") {
+                status = "unavailable"; // Slot is unavailable due to accepted request
+            } else if (slotStatusMap[dbFormat] === "accepted") {
+                status = "accepted";  // Slot is already booked (accepted)
+            } else if (slotStatusMap[dbFormat] === "rejected") {
+                status = "rejected";  // Slot was rejected
+            } else if (slotStatusMap[dbFormat] === "pending") {
+                status = "pending";  // Slot is pending
+            }
+            else if(slotStatusMap[dbFormat] === "rejectedForSomeOne"){
+                status = "rejected";  // Slot is pending
+
+            }
+
             const slotDiv = document.createElement("div");
             slotDiv.className = "slot-btn";
 
+            // Set the slot background and text based on the status
             if (status === "available") {
                 slotDiv.style.backgroundColor = "green";
                 slotDiv.textContent = `${display} - Available`;
                 slotDiv.addEventListener("click", () => {
-                    sendBookingRequest(workerId, workerName, dbFormat);
+                    sendBookingRequest(dbFormat);
                 });
+            } else if (status === "unavailable") {
+                slotDiv.style.backgroundColor = "gray";
+                slotDiv.style.cursor = "not-allowed";
+                slotDiv.textContent = `${display} - Unavailable`;
             } else if (status === "accepted") {
                 slotDiv.style.backgroundColor = "gray";
                 slotDiv.style.cursor = "not-allowed";
@@ -196,7 +267,7 @@ function openBookingPopup(workerId, workerName) {
                 slotDiv.style.backgroundColor = "red";
                 slotDiv.style.cursor = "not-allowed";
                 slotDiv.textContent = `${display} - Rejected`;
-            } else {
+            } else if (status === "pending") {
                 slotDiv.style.backgroundColor = "blue";
                 slotDiv.style.cursor = "not-allowed";
                 slotDiv.textContent = `${display} - Waiting for confirmation`;

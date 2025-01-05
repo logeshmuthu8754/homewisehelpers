@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Wise Helpers</title>
     <link rel="stylesheet" href="../style/home.css">
+    <link rel="stylesheet" href="../style/workerHome.css">
 </head>
+
 <body>
-        <nav>
-            <div class="logo">
-                <img src="../assets/images/hwh_logo.png" alt="">
-            </div>
-            <div class="nav-items">
-                <a id="plumber_logo" href="./worker_home.html">Home</a>
-                <a id="plumber_logo" href="./worker_confirm_slots.html">Confirm slots</a>
-                <a id="plumber_logo" href="./worker_completed_slots.html">Pending slots</a>
-                <a id="logout_btn">Logout</a>
-            </div>
-        </nav>
-        
+    <nav>
+        <div class="logo">
+            <img src="../assets/images/hwh_logo.png" alt="">
+        </div>
+        <div class="nav-items">
+            <a id="plumber_logo" href="./worker_home.html">Home</a>
+            <a id="plumber_logo" href="./worker_pendingWorks.html">Pending works</a>
+            <a id="plumber_logo" href="./worker_activities.html">Activites</a>
 
-    <div class="wrapper" >
-        <main>
-            <h2>Booking Requests</h2>
-            <ul id="requestList">
-                <!-- Booking requests will be dynamically rendered here -->
-            </ul>
-        </main>
-    
+            <a id="logout_btn">Logout</a>
+        </div>
+    </nav>
 
-        
 
-    </div>
-    <script type="module" src="../script/worker_home.js" ></script>
+
+    <main>
+        <h2>Booking Requests</h2>
+        <ul id="requestList"></ul>
+    </main>
+
+
+
+    <script type="module" src="../script/worker_home.js"></script>
 </body>
+
 </html>
