@@ -68,25 +68,9 @@ function initializeWorkersData(workerId) {
     
     const qu = query(
         collection(db, "requests"),
-        where("workerId", "==", workerId), // Filter by workerId
-        where("status", "in", ["completed", "not completed"]) // Match either "completed" or "not completed"
+        where("userId","==",currentUserId)
     );
 
-    async function fetchUserData(userId) {
-        const qForUser = doc(db, "users", userId);
-        try {
-            const docSnapshot = await getDoc(qForUser);
-            if (docSnapshot.exists()) {
-                return docSnapshot.data();
-            } else {
-                console.log("No such document!");
-                return null;
-            }
-        } catch (error) {
-            console.error("Error getting document:", error);
-            return null;
-        }
-    }
 
     onSnapshot(qu, async (snapshot) => {
         requestList.innerHTML = ""; // Clear previous entries
@@ -96,12 +80,6 @@ function initializeWorkersData(workerId) {
             console.log(request);
             
 
-            // Wait for user data to be fetched
-            const userData = await fetchUserData(request.userId);
-            console.log(userData);
-
-            const userName = userData ? userData.name : "Unknown";
-            const userAddress = userData.address;
             const slotTime = request.slotTime;
             const slotDate = request.date;
 
@@ -113,8 +91,7 @@ function initializeWorkersData(workerId) {
             <div class="details">
               <p>Slot: ${slots[slotTime]}</p>
               <p>Date: ${slotDate}</p>
-              <p>User: ${userName}</p>
-              <p>Address: ${userAddress}</p>
+              <p>WorkerName : ${request.workerName}</p>
             </div>
             <div class="buttons">
               <button id="${request.status}">${request.status}</button>

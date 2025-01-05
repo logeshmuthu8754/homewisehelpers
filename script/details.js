@@ -158,8 +158,9 @@ async function sendBookingRequest(slotTime) {
             status: "pending",
             date:selectedDate,
         });
-
         alert(`Booking request sent to ${workerName} for ${slotTime}.`);
+        openBookingPopup()
+
     } catch (error) {
         console.error("Error handling booking request:", error);
     }
@@ -183,124 +184,138 @@ const defaultSlots = [
     { display: "4:00 PM-5:00 PM", dbFormat: "4-5" }
 ];
 
-
-
 function openBookingPopup() {
     const popupOverlay = document.getElementById("popupOverlay");
     const closePopup = document.getElementById("closePopup");
     const slotsContainer = document.getElementById("slotsContainer");
 
+    // Clear previous slots and open the popup
+    slotsContainer.innerHTML = "";
     popupOverlay.classList.remove("hidden");
 
+    // Close popup logic
     closePopup.addEventListener("click", () => {
         popupOverlay.classList.add("hidden");
-        selectedDate = null;
     });
 
-    // Query to get worker's availability for the selected date
-    const q = query(collection(db, "requests"), where("workerId", "==", workerId), where("date", "==", selectedDate));
-    const workerAvailability = query(collection(db, "workerSlots"), where("workerId", "==", workerId), where("date", "==", selectedDate));
+    // Query worker's availability and requests for the selected date
+    const availabilityQuery = query(
+        collection(db, "workerSlots"),
+        where("workerId", "==", workerId),
+        where("date", "==", selectedDate)
+    );
+    const requestsQuery = query(
+        collection(db, "requests"),
+        where("workerId", "==", workerId),
+        where("date", "==", selectedDate)
+    );
 
-    onSnapshot(workerAvailability, async (snapshot) => {
-        const workerSlotStatus = new Set();  // Set to store occupied worker slots for quick lookup
+    // Set to track occupied slots
+    const workerSlotStatus = new Set();
 
-        snapshot.forEach((doc) => {
+    // Real-time updates for availability
+    onSnapshot(availabilityQuery, (availabilitySnapshot) => {
+        workerSlotStatus.clear();
+        availabilitySnapshot.forEach((doc) => {
             const workerSlot = doc.data();
-            workerSlotStatus.add(workerSlot.slotTime);  // Add the slot time to the Set
+            workerSlotStatus.add(workerSlot.slotTime);
         });
 
-        // Now, check for requests and update status of slots
-        const slotStatusMap = {};  // Object to map slotTime to request status
-        const requestSnapshot = await getDocs(q);  // Fetch requests for the selected date
+        // Fetch requests and render slots
+        getDocs(requestsQuery).then((requestSnapshot) => {
+            const slotStatusMap = {}; // Map to track slot statuses
 
-        // Handle requests and update slot statuses
-        requestSnapshot.forEach((doc) => {
-            const request = doc.data();
-            console.log("Request Data:", request);
-
-            // If the current user is not the one in the request
-            if (currentUserId !== request.userId) {
-                // Handle rejected request: Mark the slot as available for others
-                if (request.status === "rejected"||request.status=="pending") {
-                    slotStatusMap[request.slotTime] = "available"; 
-                }
-                else {
-                    // Handle accepted request: Mark the slot as unavailable for all users
-                    if (request.status === "accepted") {
-                        slotStatusMap[request.slotTime] = "unavailable"; 
-                        console.log(`Slot marked as unavailable due to accepted request for slot ${request.slotTime}`);
-                    } else if (!slotStatusMap[request.slotTime]) {
-                        // Only update status if it's not already set (to avoid overwriting "unavailable")
-                        slotStatusMap[request.slotTime] = request.status;
+            requestSnapshot.forEach((doc) => {
+                const request = doc.data();
+                console.log("Request Data:", request);
+    
+                // If the current user is not the one in the request
+                if (currentUserId !== request.userId) {
+                    // Handle rejected request: Mark the slot as available for others
+                    if (request.status === "rejected"||request.status=="pending") {
+                        slotStatusMap[request.slotTime] = "available"; 
                     }
+                    else {
+                        // Handle accepted request: Mark the slot as unavailable for all users
+                        if (request.status === "accepted") {
+                            slotStatusMap[request.slotTime] = "unavailable"; 
+                            console.log(`Slot marked as unavailable due to accepted request for slot ${request.slotTime}`);
+                        } else if (!slotStatusMap[request.slotTime]) {
+                            // Only update status if it's not already set (to avoid overwriting "unavailable")
+                            slotStatusMap[request.slotTime] = request.status;
+                        }
+                    }
+                } else {
+                    // If the userId is the same as the current user, use the request's actual status
+                    slotStatusMap[request.slotTime] = request.status; 
                 }
-            } else {
-                // If the userId is the same as the current user, use the request's actual status
-                slotStatusMap[request.slotTime] = request.status; 
-            }
+            });
+
+            // Render slots with statuses
+            renderSlots(slotStatusMap, workerSlotStatus);
         });
+    });
+}
+// Helper function to render slots
+function renderSlots(slotStatusMap, workerSlotStatus) {
+    const slotsContainer = document.getElementById("slotsContainer");
 
-        // Debugging output to see final slotStatusMap
-        console.log("Final Slot Status Map:", slotStatusMap);
+    slotsContainer.innerHTML = "";
+    defaultSlots.forEach(({ display, dbFormat }) => {
+        let status = "available";  // Default status
 
-        // Render slots with updated statuses
-        slotsContainer.innerHTML = "";
-        defaultSlots.forEach(({ display, dbFormat }) => {
-            let status = "available";  // Default status
+        // First, check if any request has marked the slot as unavailable due to "accepted" status
+        if (slotStatusMap[dbFormat] === "unavailable") {
+            status = "unavailable"; // Slot is unavailable due to accepted request
+        } else if (workerSlotStatus.has(dbFormat)) {
+            // Check if the worker has set the slot as unavailable
+            status = "unavailable";  // Mark as unavailable if found in worker availability
+        } else if (slotStatusMap[dbFormat] === "accepted") {
+            status = "accepted";  // Slot is already booked (accepted)
+        } else if (slotStatusMap[dbFormat] === "rejected") {
+            status = "rejected";  // Slot was rejected
+        }
+        else if(slotStatusMap[dbFormat]=="pending"){
+            status="pending"
+        }
+        else if(slotStatusMap[dbFormat]=="rejectedForSomeOne"){
+            status="rejected"
+        }
 
-            // First, check if any request has marked the slot as unavailable due to "accepted" status
-            if (slotStatusMap[dbFormat] === "unavailable") {
-                status = "unavailable"; // Slot is unavailable due to accepted request
-            } else if (workerSlotStatus.has(dbFormat)) {
-                // Check if the worker has set the slot as unavailable
-                status = "unavailable";  // Mark as unavailable if found in worker availability
-            } else if (slotStatusMap[dbFormat] === "accepted") {
-                status = "accepted";  // Slot is already booked (accepted)
-            } else if (slotStatusMap[dbFormat] === "rejected") {
-                status = "rejected";  // Slot was rejected
-            }
-            else if(slotStatusMap[dbFormat]=="pending"){
-                status="pending"
-            }
-            else if(slotStatusMap[dbFormat]=="rejectedForSomeOne"){
-                status="rejected"
-            }
+        const slotDiv = document.createElement("div");
+        slotDiv.className = "slot-btn";
 
-            const slotDiv = document.createElement("div");
-            slotDiv.className = "slot-btn";
+        // Set the slot background and text based on the status
+        if (status === "available") {
+            slotDiv.style.backgroundColor = "green";
+            slotDiv.textContent = `${display} - Available`;
+            slotDiv.addEventListener("click", () => {
+                sendBookingRequest(dbFormat);
+            });
+        } else if (status === "unavailable") {
+            slotDiv.style.backgroundColor = "gray";
+            slotDiv.style.cursor = "not-allowed";
+            slotDiv.textContent = `${display} - Unavailable`;
+        } else if (status === "accepted") {
+            slotDiv.style.backgroundColor = "gray";
+            slotDiv.style.cursor = "not-allowed";
+            slotDiv.textContent = `${display} - Booked`;
+        } else if (status === "rejected") {
+            slotDiv.style.backgroundColor = "red";
+            slotDiv.style.cursor = "not-allowed";
+            slotDiv.textContent = `${display} - Rejected`;
+        }
+        else if(status==="pending"){
+            slotDiv.style.backgroundColor = "blue";
+            slotDiv.style.cursor = "not-allowed";
+            slotDiv.textContent = `${display} - waiting`;
+        }
+        else {
+            slotDiv.style.backgroundColor = "blue";
+            slotDiv.style.cursor = "not-allowed";
+            slotDiv.textContent = `${display} - Waiting for confirmation`;
+        }
 
-            // Set the slot background and text based on the status
-            if (status === "available") {
-                slotDiv.style.backgroundColor = "green";
-                slotDiv.textContent = `${display} - Available`;
-                slotDiv.addEventListener("click", () => {
-                    sendBookingRequest(dbFormat);
-                });
-            } else if (status === "unavailable") {
-                slotDiv.style.backgroundColor = "gray";
-                slotDiv.style.cursor = "not-allowed";
-                slotDiv.textContent = `${display} - Unavailable`;
-            } else if (status === "accepted") {
-                slotDiv.style.backgroundColor = "gray";
-                slotDiv.style.cursor = "not-allowed";
-                slotDiv.textContent = `${display} - Booked`;
-            } else if (status === "rejected") {
-                slotDiv.style.backgroundColor = "red";
-                slotDiv.style.cursor = "not-allowed";
-                slotDiv.textContent = `${display} - Rejected`;
-            }
-            else if(status==="pending"){
-                slotDiv.style.backgroundColor = "blue";
-                slotDiv.style.cursor = "not-allowed";
-                slotDiv.textContent = `${display} - waiting`;
-            }
-            else {
-                slotDiv.style.backgroundColor = "blue";
-                slotDiv.style.cursor = "not-allowed";
-                slotDiv.textContent = `${display} - Waiting for confirmation`;
-            }
-
-            slotsContainer.appendChild(slotDiv);
-        });
+        slotsContainer.appendChild(slotDiv);
     });
 }

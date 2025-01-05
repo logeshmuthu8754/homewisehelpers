@@ -62,12 +62,31 @@ onAuthStateChanged(auth, (user) => {
     "4-5": "4:00 PM-5:00 PM"
 }
 
+
+function isTimePassed(date, slotTime) {
+    console.log(date,slotTime);
+    
+    const [startHour, endHour] = slotTime.split("-").map(Number); // Extract start and end hours
+    const scheduledDate = new Date(date); // Convert date string to Date object
+    const now = new Date(); // Current date and time
+
+    // Set the scheduled start time
+    scheduledDate.setHours(startHour, 0, 0, 0); // Set the start hour, minute, second, millisecond
+
+    return now >= scheduledDate; // Check if the current time is past the scheduled start time
+}
+
+
 // Initialize worker request listener
 function initializeWorkersData(workerId) {
     const requestList = document.getElementById("pendingWorksList");
 
-    // Function to handle marking a request as completed
-    async function handleMarkCompleted(requestId) {
+    async function handleMarkCompleted(requestId, date, slotTime) {
+        if (!isTimePassed(date, slotTime)) {
+            alert("You cannot mark this request as completed until the scheduled time has passed.");
+            return;
+        }
+    
         try {
             await updateDoc(doc(db, "requests", requestId), {
                 status: "completed", // Update request status
@@ -77,9 +96,14 @@ function initializeWorkersData(workerId) {
             console.error("Error marking request as completed:", error);
         }
     }
-
+    
     // Function to handle marking a request as not completed
-    async function handleMarkNotCompleted(requestId) {
+    async function handleMarkNotCompleted(requestId, date, slotTime) {
+        if (!isTimePassed(date, slotTime)) {
+            alert("You cannot mark this request as not completed until the scheduled time has passed.");
+            return;
+        }
+    
         try {
             await updateDoc(doc(db, "requests", requestId), {
                 status: "not completed", // Update request status
@@ -89,7 +113,6 @@ function initializeWorkersData(workerId) {
             console.error("Error marking request as not completed:", error);
         }
     }
-    console.log(workerId);
     
     // Real-time listener for requests
     const qu = query(
@@ -157,11 +180,12 @@ function initializeWorkersData(workerId) {
             );
 
             completedBtn.addEventListener("click", () =>
-                handleMarkCompleted(doc.id)
+                handleMarkCompleted(doc.id, slotDate, slotTime)
             );
             notCompletedBtn.addEventListener("click", () =>
-                handleMarkNotCompleted(doc.id)
+                handleMarkNotCompleted(doc.id, slotDate, slotTime)
             );
+    
 
             requestList.appendChild(listItem); // Append the list item (card) to the list
         }

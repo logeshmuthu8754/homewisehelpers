@@ -51,3 +51,18 @@ h2 {
 }
 
 
+#accepted{
+  background-color: blue;
+}
+
+#completed{
+  background-color: green;
+}
+
+#pending{
+  background-color: orange;
+}
+
+#not-completed{
+background-color: red;
+} 
