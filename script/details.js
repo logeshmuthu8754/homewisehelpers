@@ -184,6 +184,7 @@ const defaultSlots = [
 ];
 
 
+
 function openBookingPopup() {
     const popupOverlay = document.getElementById("popupOverlay");
     const closePopup = document.getElementById("closePopup");
@@ -196,25 +197,42 @@ function openBookingPopup() {
         selectedDate = null;
     });
 
-    // Query to get requests for the selected date and worker
+    // Query to get worker's availability for the selected date
     const q = query(collection(db, "requests"), where("workerId", "==", workerId), where("date", "==", selectedDate));
+    const workerAvailability = query(collection(db, "workerSlots"), where("workerId", "==", workerId), where("date", "==", selectedDate));
 
-    onSnapshot(q, async (snapshot) => {
-        const slotStatusMap = {};  // Object to map slotTime to request status
+    onSnapshot(workerAvailability, async (snapshot) => {
+        const workerSlotStatus = new Set();  // Set to store occupied worker slots for quick lookup
 
         snapshot.forEach((doc) => {
+            const workerSlot = doc.data();
+            workerSlotStatus.add(workerSlot.slotTime);  // Add the slot time to the Set
+        });
+
+        // Now, check for requests and update status of slots
+        const slotStatusMap = {};  // Object to map slotTime to request status
+        const requestSnapshot = await getDocs(q);  // Fetch requests for the selected date
+
+        // Handle requests and update slot statuses
+        requestSnapshot.forEach((doc) => {
             const request = doc.data();
             console.log("Request Data:", request);
 
             // If the current user is not the one in the request
             if (currentUserId !== request.userId) {
-                // Handle rejected or pending request: Mark the slot as available for others
-                if (request.status === "rejected" || request.status === "pending") {
+                // Handle rejected request: Mark the slot as available for others
+                if (request.status === "rejected"||request.status=="pending") {
                     slotStatusMap[request.slotTime] = "available"; 
-                } else if (request.status === "accepted") {
+                }
+                else {
                     // Handle accepted request: Mark the slot as unavailable for all users
-                    slotStatusMap[request.slotTime] = "unavailable"; 
-                    console.log(`Slot marked as unavailable due to accepted request for slot ${request.slotTime}`);
+                    if (request.status === "accepted") {
+                        slotStatusMap[request.slotTime] = "unavailable"; 
+                        console.log(`Slot marked as unavailable due to accepted request for slot ${request.slotTime}`);
+                    } else if (!slotStatusMap[request.slotTime]) {
+                        // Only update status if it's not already set (to avoid overwriting "unavailable")
+                        slotStatusMap[request.slotTime] = request.status;
+                    }
                 }
             } else {
                 // If the userId is the same as the current user, use the request's actual status
@@ -230,19 +248,22 @@ function openBookingPopup() {
         defaultSlots.forEach(({ display, dbFormat }) => {
             let status = "available";  // Default status
 
-            // Check the status of each slot from the requests
+            // First, check if any request has marked the slot as unavailable due to "accepted" status
             if (slotStatusMap[dbFormat] === "unavailable") {
                 status = "unavailable"; // Slot is unavailable due to accepted request
+            } else if (workerSlotStatus.has(dbFormat)) {
+                // Check if the worker has set the slot as unavailable
+                status = "unavailable";  // Mark as unavailable if found in worker availability
             } else if (slotStatusMap[dbFormat] === "accepted") {
                 status = "accepted";  // Slot is already booked (accepted)
             } else if (slotStatusMap[dbFormat] === "rejected") {
                 status = "rejected";  // Slot was rejected
-            } else if (slotStatusMap[dbFormat] === "pending") {
-                status = "pending";  // Slot is pending
             }
-            else if(slotStatusMap[dbFormat] === "rejectedForSomeOne"){
-                status = "rejected";  // Slot is pending
-
+            else if(slotStatusMap[dbFormat]=="pending"){
+                status="pending"
+            }
+            else if(slotStatusMap[dbFormat]=="rejectedForSomeOne"){
+                status="rejected"
             }
 
             const slotDiv = document.createElement("div");
@@ -267,7 +288,13 @@ function openBookingPopup() {
                 slotDiv.style.backgroundColor = "red";
                 slotDiv.style.cursor = "not-allowed";
                 slotDiv.textContent = `${display} - Rejected`;
-            } else if (status === "pending") {
+            }
+            else if(status==="pending"){
+                slotDiv.style.backgroundColor = "blue";
+                slotDiv.style.cursor = "not-allowed";
+                slotDiv.textContent = `${display} - waiting`;
+            }
+            else {
                 slotDiv.style.backgroundColor = "blue";
                 slotDiv.style.cursor = "not-allowed";
                 slotDiv.textContent = `${display} - Waiting for confirmation`;

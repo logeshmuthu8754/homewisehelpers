@@ -84,6 +84,12 @@ function initializeWorkerRequests(workerId) {
                 status: "accepted", // Update request status
                 booked: true,
             });
+            await addDoc(collection(db, "workerSlots"), {
+                workerId: workerId,
+                slotTime: time,
+                selectedDate,
+                userId
+            });
             console.log("New worker slot document created.");
             alert(`Slot "${time}" has been accepted.`);
     
