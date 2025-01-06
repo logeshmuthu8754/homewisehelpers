@@ -69,8 +69,10 @@ const validateEmail = () => {
 
 const validatePassword = () => {
     const passwordValue = passwordInput.value.trim();
-    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    const decimalOrNegativeRegex = /[.\-]/; 
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; // Check for at least one special character
+    const uppercaseRegex = /[A-Z]/; // Check for at least one uppercase letter
+    const lowercaseRegex = /[a-z]/; // Check for at least one lowercase letter
+    const decimalOrNegativeRegex = /[.\-]/; // Check for decimals or negative signs
 
     if (!passwordValue) {
         passwordError.textContent = "Password is required.";
@@ -83,6 +85,12 @@ const validatePassword = () => {
         return false;
     } else if (!specialCharRegex.test(passwordValue)) {
         passwordError.textContent = "Password must include at least one special character.";
+        return false;
+    } else if (!uppercaseRegex.test(passwordValue)) {
+        passwordError.textContent = "Password must include at least one uppercase letter.";
+        return false;
+    } else if (!lowercaseRegex.test(passwordValue)) {
+        passwordError.textContent = "Password must include at least one lowercase letter.";
         return false;
     } else if (decimalOrNegativeRegex.test(passwordValue)) {
         passwordError.textContent = "Password must not contain decimal points or negative signs.";

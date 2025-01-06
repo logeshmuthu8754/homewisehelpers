@@ -308,7 +308,7 @@ function renderSlots(slotStatusMap, workerSlotStatus) {
         else if(status==="pending"){
             slotDiv.style.backgroundColor = "blue";
             slotDiv.style.cursor = "not-allowed";
-            slotDiv.textContent = `${display} - waiting`;
+            slotDiv.textContent = `${display} - waiting For Worker`;
         }
         else {
             slotDiv.style.backgroundColor = "blue";
