@@ -9,11 +9,11 @@ const consumerData = {
     "AC Technician": "../assets/images/ac_technistion.webp",
     "Acting Driver": "../assets/images/accting_driver_img.jpg",
     "Bike Mechanic": "../assets/images/bike_mechanic.webp",
-    "TV Technician": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
+    "TV Technician": "../assets/images/Tv_tchnistion.webp",
     "House Cleaner": "../assets/images/house_clener.webp",
-    "Water Tank Cleaner": "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
+    "Water Tank Cleaner": "../assets/images/water_tank_clener.webp",
     "Car Mechanic": "../assets/images/car_mechanic.webp",
-    Welder: "../assets/images/sample_img_all-photoaidcom-cropped.jpg",
+    Welder: "../assets/images/welder_img.webp",
 };
 
 // Populate roles on page load
